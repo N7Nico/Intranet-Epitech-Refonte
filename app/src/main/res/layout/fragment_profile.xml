@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/background"
+                android:layout_width="wrap_content"
+                android:layout_height="125dp"
+                android:scaleType="centerCrop"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/montpellier"
+                android:contentDescription="@string/student_img_desc" />
+
+            <ImageView
+                android:id="@+id/student_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/background"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/student_img_desc" />
+
+            <TextView
+                android:id="@+id/login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/student_img"
+                android:text="@string/login_n"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/login"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/email" />
+
+            <TextView
+                android:id="@+id/gpa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/background"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="16dp"
+                android:layout_toStartOf="@+id/gpa_content"
+                android:text="@string/gpa"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/gpa_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/background"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/na" />
+
+            <TextView
+                android:id="@+id/promo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/gpa"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="3dp"
+                android:layout_toStartOf="@+id/promo_content"
+                android:text="@string/promo"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/promo_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/gpa"
+                android:layout_toStartOf="@+id/gpa"
+                android:text="@string/na" />
+
+            <TextView
+                android:id="@+id/semester"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/promo"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="3dp"
+                android:layout_toStartOf="@+id/semester_content"
+                android:text="@string/semester"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/semester_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/promo"
+                android:layout_toStartOf="@+id/gpa"
+                android:text="@string/na" />
+
+            <TextView
+                android:id="@+id/credits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/semester"
+                android:layout_marginEnd="3dp"
+                android:layout_toStartOf="@+id/credits_content"
+                android:text="@string/credits"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/credits_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/semester"
+                android:layout_marginEnd="16dp"
+                android:text="@string/na" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/profile_card"/>
+</RelativeLayout>
