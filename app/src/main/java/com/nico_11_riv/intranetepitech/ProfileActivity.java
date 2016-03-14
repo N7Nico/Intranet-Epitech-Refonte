@@ -30,17 +30,6 @@ import java.util.List;
 @EActivity(R.layout.activity_profile)
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @RestService
-    IntrAPI api;
-
-    @Bean
-    APIErrorHandler ErrorHandler;
-
-    @AfterInject
-    void afterInject() {
-        api.setRestErrorHandler(ErrorHandler);
-    }
-
     @ViewById
     Toolbar toolbar;
 

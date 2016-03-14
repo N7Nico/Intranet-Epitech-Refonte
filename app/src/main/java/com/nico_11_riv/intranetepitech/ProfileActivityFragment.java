@@ -8,6 +8,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,10 +64,12 @@ public class ProfileActivityFragment extends Fragment {
     RecyclerView rv;
     @ViewById
     ImageView background;
+    @ViewById
+    ProgressBar messages_progress;
 
     private ArrayList<Messages_content> items;
     private GUser gUser = new GUser();
-    private Guserinfos user_info = new Guserinfos();
+    private Guserinfos user_info;
 
     @AfterInject
     void afterInject() {
@@ -76,6 +79,9 @@ public class ProfileActivityFragment extends Fragment {
     @UiThread
     void setadpt(ArrayList<Messages_content> items) {
         RVMessagesAdapter adapter = new RVMessagesAdapter(items, getContext());
+
+        messages_progress.setVisibility(View.GONE);
+
         rv.setAdapter(adapter);
     }
 
@@ -111,6 +117,7 @@ public class ProfileActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+        user_info = new Guserinfos();
         filluserinfosui();
     }
 

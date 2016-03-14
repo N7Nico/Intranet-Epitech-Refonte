@@ -13,12 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
-import com.nico_11_riv.intranetepitech.api.requests.LoginRequest;
-import com.nico_11_riv.intranetepitech.api.HerokuAPI;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
-import com.nico_11_riv.intranetepitech.database.setters.infos.Puserinfos;
-import com.nico_11_riv.intranetepitech.database.setters.user.SUser;
+import com.nico_11_riv.intranetepitech.api.requests.LoginRequest;
 import com.nico_11_riv.intranetepitech.database.User;
+import com.nico_11_riv.intranetepitech.database.setters.user.SUser;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -43,23 +41,19 @@ public class LoginActivity extends AppCompatActivity {
 
     @Bean
     APIErrorHandler ErrorHandler;
+    @ViewById
+    AutoCompleteTextView vlogin;
+    @ViewById
+    EditText vpasswd;
+    @ViewById
+    Button login_button;
+    @ViewById
+    ProgressBar login_progress;
 
     @AfterInject
     void afterInject() {
         api.setRestErrorHandler(ErrorHandler);
     }
-
-    @ViewById
-    AutoCompleteTextView vlogin;
-
-    @ViewById
-    EditText vpasswd;
-
-    @ViewById
-    Button login_button;
-
-    @ViewById
-    ProgressBar login_progress;
 
     private boolean isConnected() {
         try {
@@ -110,6 +104,11 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
+    @UiThread
+    void progressBarGone() {
+        login_progress.setVisibility(View.GONE);
+    }
+
     boolean connectNetwork(String login, String passwd) {
         LoginRequest lr = new LoginRequest(login, passwd);
         String tokengenerate = generateToken();
@@ -122,10 +121,11 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         } catch (HttpClientErrorException e) {
+            progressBarGone();
             error_connect("Erreur de l'API");
             e.printStackTrace();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
+            progressBarGone();
             error_connect("Mauvais login / mot de passe");
             e.printStackTrace();
         }
@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Background
     void attemptLogin() {
-        String login = vlogin.getText().toString().replaceAll("\\s","");
+        String login = vlogin.getText().toString().replaceAll("\\s", "");
         String passwd = vpasswd.getText().toString();
 
         View focusView = null;
@@ -175,8 +175,10 @@ public class LoginActivity extends AppCompatActivity {
             focusView = vlogin;
             cancel = true;
         }
-        if (cancel)
+        if (cancel) {
+            login_progress.setVisibility(View.GONE);
             setView(focusView);
+        }
         else {
             if (User.count(User.class, "login = ? and passwd = ?", new String[]{login, passwd}) == 1) {
                 SUser sUser = new SUser(login);
