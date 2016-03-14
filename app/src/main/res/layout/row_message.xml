@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/date"
-                android:layout_toEndOf="@+id/person_img"
+                android:layout_toEndOf="@+id/person_name"
                 android:text="@string/lorem" />
 
             <TextView
@@ -48,6 +48,7 @@
                 android:layout_below="@+id/person_img"
                 android:textSize="10dp"
                 android:textStyle="bold"
+                android:layout_marginEnd="16dp"
                 android:text="@string/login_n" />
 
             <TextView

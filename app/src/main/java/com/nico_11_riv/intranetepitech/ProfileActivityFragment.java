@@ -1,10 +1,12 @@
 package com.nico_11_riv.intranetepitech;
 
+import android.content.res.Configuration;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +61,9 @@ public class ProfileActivityFragment extends Fragment {
     TextView credits_content;
     @ViewById
     RecyclerView rv;
+    @ViewById
+    ImageView background;
+
     private ArrayList<Messages_content> items;
     private GUser gUser = new GUser();
     private Guserinfos user_info = new Guserinfos();
@@ -134,6 +139,8 @@ public class ProfileActivityFragment extends Fragment {
 
     @AfterViews
     void init() {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            background.setVisibility(View.GONE);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         profilemessages();

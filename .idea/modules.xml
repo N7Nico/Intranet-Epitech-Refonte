@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IntranetEpitech.iml" filepath="$PROJECT_DIR$/IntranetEpitech.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Intranet-Epitech-Refonte.iml" filepath="$PROJECT_DIR$/Intranet-Epitech-Refonte.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
