@@ -1,13 +1,13 @@
 package com.nico_11_riv.intranetepitech.ui.contents;
 
-public class Messages_content {
+public class Message_content {
     private String picture;
     private String date;
     private String titleMessage;
     private String loginMessage;
     private String messageContent;
 
-    public Messages_content(String picture, String date, String titleMessage, String loginMessage, String messageContent) {
+    public Message_content(String picture, String date, String titleMessage, String loginMessage, String messageContent) {
         this.picture = picture;
         this.date = date;
         this.titleMessage = titleMessage;

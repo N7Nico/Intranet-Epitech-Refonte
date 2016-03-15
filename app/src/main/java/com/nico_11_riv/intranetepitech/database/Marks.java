@@ -13,7 +13,7 @@ public class Marks extends SugarRecord {
     private String title;
     private String date;
     private String correcteur;
-    private String final_note;
+    private String finalnote;
     private String comment;
 
     public Marks () {
@@ -24,15 +24,6 @@ public class Marks extends SugarRecord {
     public Marks (String token) {
         this.token = token;
     }
-
-    public String getCodemodule() {
-        return codemodule;
-    }
-
-    public void setCodemodule(String codemodule) {
-        this.codemodule = codemodule;
-    }
-
 
     public String getToken() {
         return token;
@@ -48,6 +39,14 @@ public class Marks extends SugarRecord {
 
     public void setScolyear(String scolyear) {
         this.scolyear = scolyear;
+    }
+
+    public String getCodemodule() {
+        return codemodule;
+    }
+
+    public void setCodemodule(String codemodule) {
+        this.codemodule = codemodule;
     }
 
     public String getTitlemodule() {
@@ -98,12 +97,12 @@ public class Marks extends SugarRecord {
         this.correcteur = correcteur;
     }
 
-    public String getFinal_note() {
-        return final_note;
+    public String getFinalnote() {
+        return finalnote;
     }
 
-    public void setFinal_note(String final_note) {
-        this.final_note = final_note;
+    public void setFinalnote(String finalnote) {
+        this.finalnote = finalnote;
     }
 
     public String getComment() {

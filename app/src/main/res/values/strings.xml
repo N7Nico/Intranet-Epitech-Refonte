@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Intranet Epitech</string>
     <string name="title_profile">Profil</string>
+    <string name="title_marks">Notes</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,7 +9,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sodales sagittis molestie.</string>
-
 
 
     <!-- Values of login activity-->
@@ -32,5 +32,12 @@
     <!-- Values of messages RecyclerView-->
     <string name="profile_img_desc">Profile Img</string>
     <string name="date">2042-01-24 23:42:00</string>
+
+    <!-- Values of marks RecyclerView-->
+    <string name="mark_img_desc">Mark Background</string>
+    <string name="mark">42</string>
+    <string name="corrector">corrector_l</string>
+    <string name="project">Project</string>
+    <string name="module">Module</string>
 
 </resources>

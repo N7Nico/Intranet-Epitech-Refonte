@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.database.Messages;
@@ -23,7 +22,7 @@ import com.nico_11_riv.intranetepitech.database.setters.infos.Puserinfos;
 import com.nico_11_riv.intranetepitech.database.setters.messages.Pmessages;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.ui.adapters.RVMessagesAdapter;
-import com.nico_11_riv.intranetepitech.ui.contents.Messages_content;
+import com.nico_11_riv.intranetepitech.ui.contents.Message_content;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.squareup.picasso.Picasso;
@@ -46,30 +45,41 @@ public class ProfileActivityFragment extends Fragment {
 
     @RestService
     IntrAPI api;
+
     @Bean
     APIErrorHandler ErrorHandler;
+
     @ViewById
     ImageView student_img;
+
     @ViewById
     TextView login;
+
     @ViewById
     TextView email;
+
     @ViewById
     TextView gpa_content;
+
     @ViewById
     TextView promo_content;
+
     @ViewById
     TextView semester_content;
+
     @ViewById
     TextView credits_content;
+
     @ViewById
     RecyclerView rv;
+
     @ViewById
     ImageView background;
+
     @ViewById
     ProgressBar messages_progress;
 
-    private ArrayList<Messages_content> items;
+    private ArrayList<Message_content> items;
     private GUser gUser = new GUser();
     private Guserinfos user_info;
 
@@ -79,7 +89,7 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     @UiThread
-    void setadpt(ArrayList<Messages_content> items) {
+    void setadpt(ArrayList<Message_content> items) {
         RVMessagesAdapter adapter = new RVMessagesAdapter(items, getContext());
 
         messages_progress.setVisibility(View.GONE);
@@ -89,10 +99,10 @@ public class ProfileActivityFragment extends Fragment {
 
     void fillmessagesui() {
         List<Messages> messages = Select.from(Messages.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<Messages_content>();
+        items = new ArrayList<Message_content>();
         for (int i = 0; i < messages.size(); i++) {
             Messages info = messages.get(i);
-            items.add(new Messages_content(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin().toString(), Html.fromHtml(info.getContent()).toString()));
+            items.add(new Message_content(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin().toString(), Html.fromHtml(info.getContent()).toString()));
         }
     }
 

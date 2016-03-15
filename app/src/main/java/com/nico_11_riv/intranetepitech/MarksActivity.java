@@ -22,9 +22,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-@EActivity(R.layout.activity_profile)
-public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+@EActivity(R.layout.activity_marks)
+public class MarksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     @ViewById
     Toolbar toolbar;
 
@@ -65,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_marks, menu);
         return true;
     }
 

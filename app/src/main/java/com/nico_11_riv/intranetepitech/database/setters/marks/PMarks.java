@@ -34,7 +34,7 @@ public class PMarks {
                     note.setTitle(tmp.getString("title"));
                     note.setDate(tmp.getString("date"));
                     note.setCorrecteur(tmp.getString("correcteur"));
-                    note.setFinal_note(tmp.getString("final_note"));
+                    note.setFinalnote(tmp.getString("final_note"));
                     note.setComment(tmp.getString("comment"));
                     note.save();
                 }

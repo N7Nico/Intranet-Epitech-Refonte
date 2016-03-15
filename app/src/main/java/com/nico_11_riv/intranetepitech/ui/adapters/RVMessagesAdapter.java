@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.setters.infos.CircleTransform;
-import com.nico_11_riv.intranetepitech.ui.contents.Messages_content;
+import com.nico_11_riv.intranetepitech.ui.contents.Message_content;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,17 +25,17 @@ import java.util.List;
 
 public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.ViewHolder> {
 
-    private List<Messages_content> persons;
+    private List<Message_content> messages;
     private Context context;
 
-    public RVMessagesAdapter(List<Messages_content> persons, Context context) {
-        this.persons = persons;
+    public RVMessagesAdapter(List<Message_content> messages, Context context) {
+        this.messages = messages;
         this.context = context;
     }
 
     @Override
     public int getItemCount() {
-        return persons.size();
+        return messages.size();
     }
 
     @Override
@@ -47,14 +47,14 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder ViewHolder, int i) {
-        if (persons.get(i).getPicture() == null || persons.get(i).getPicture().equals("null"))
-            Picasso.with(context).load(R.drawable.login_x).transform(new CircleTransform()).into(ViewHolder.personPhoto);
+        if (messages.get(i).getPicture() == null || messages.get(i).getPicture().equals("null"))
+            Picasso.with(context).load(R.drawable.login_x).transform(new CircleTransform()).into(ViewHolder.person_img);
         else
-            Picasso.with(context).load(persons.get(i).getPicture()).transform(new CircleTransform()).into(ViewHolder.personPhoto);
-        ViewHolder.date.setText(persons.get(i).getDate());
-        ViewHolder.message.setText(persons.get(i).getTitleMessage());
-        ViewHolder.person_name.setText(persons.get(i).getLoginMessage());
-        ViewHolder.description.setText(persons.get(i).getMessageContent());
+            Picasso.with(context).load(messages.get(i).getPicture()).transform(new CircleTransform()).into(ViewHolder.person_img);
+        ViewHolder.date.setText(messages.get(i).getDate());
+        ViewHolder.message.setText(messages.get(i).getTitleMessage());
+        ViewHolder.person_name.setText(messages.get(i).getLoginMessage());
+        ViewHolder.description.setText(messages.get(i).getMessageContent());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cv;
-        ImageView personPhoto;
+        ImageView person_img;
         TextView date;
         TextView message;
         TextView person_name;
@@ -78,7 +78,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
             this.context = context;
 
             cv = (CardView) itemView.findViewById(R.id.cv);
-            personPhoto = (ImageView) itemView.findViewById(R.id.person_img);
+            person_img = (ImageView) itemView.findViewById(R.id.person_img);
             date = (TextView) itemView.findViewById(R.id.date);
             message = (TextView) itemView.findViewById(R.id.message);
             person_name = (TextView) itemView.findViewById(R.id.person_name);
@@ -88,7 +88,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
         @Override
         public void onClick(View view) {
 
-            Drawable myDrawable = personPhoto.getDrawable();
+            Drawable myDrawable = person_img.getDrawable();
 
             new MaterialDialog.Builder(context)
                     .title(message.getText())
