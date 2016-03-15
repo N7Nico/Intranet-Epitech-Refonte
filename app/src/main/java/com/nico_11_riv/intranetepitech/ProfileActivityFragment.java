@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.database.Messages;
@@ -21,6 +22,7 @@ import com.nico_11_riv.intranetepitech.database.setters.infos.Guserinfos;
 import com.nico_11_riv.intranetepitech.database.setters.infos.Puserinfos;
 import com.nico_11_riv.intranetepitech.database.setters.messages.Pmessages;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
+import com.nico_11_riv.intranetepitech.ui.adapters.RVMessagesAdapter;
 import com.nico_11_riv.intranetepitech.ui.contents.Messages_content;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -98,6 +100,12 @@ public class ProfileActivityFragment extends Fragment {
     void filluserinfosui() {
         Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(student_img);
         login.setText(user_info.getLogin());
+        TextView tv = (TextView)getActivity().findViewById(R.id.menu_login);
+        tv.setText(user_info.getLogin());
+        tv = (TextView)getActivity().findViewById(R.id.menu_email);
+        tv.setText(user_info.getEmail());
+        ImageView iv = (ImageView)getActivity().findViewById(R.id.menu_img);
+        Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
         email.setText(user_info.getEmail());
         gpa_content.setText(user_info.getGpa());
         promo_content.setText(user_info.getPromo());

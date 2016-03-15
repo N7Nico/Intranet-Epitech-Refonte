@@ -1,18 +1,18 @@
-package com.nico_11_riv.intranetepitech;
+package com.nico_11_riv.intranetepitech.ui.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.setters.infos.CircleTransform;
 import com.nico_11_riv.intranetepitech.ui.contents.Messages_content;
 import com.squareup.picasso.Picasso;
@@ -28,7 +28,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
     private List<Messages_content> persons;
     private Context context;
 
-    RVMessagesAdapter(List<Messages_content> persons, Context context) {
+    public RVMessagesAdapter(List<Messages_content> persons, Context context) {
         this.persons = persons;
         this.context = context;
     }
@@ -92,7 +92,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
 
             new MaterialDialog.Builder(context)
                     .title(message.getText())
-                    .content("Date : " + date.getText() + " par " + person_name.getText() + "\n\n" + description.getText())
+                    .content(Html.fromHtml("<b>Date :</b> " + date.getText() + "<br /><b>Par :</b> " + person_name.getText() + "<br /><br />" + description.getText()))
                     .negativeText("Retour")
                     .icon(myDrawable).limitIconToDefaultSize()
                     .show();
