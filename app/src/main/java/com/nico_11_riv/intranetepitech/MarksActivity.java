@@ -13,17 +13,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.database.User;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
 @EActivity(R.layout.activity_marks)
 public class MarksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static int def_nb = 8;
+    private static int def_semester = 11;
+
+    @FragmentById(R.id.fragment_marks)
+    MarksActivityFragment fragment;
+
     @ViewById
     Toolbar toolbar;
 
@@ -70,16 +79,44 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_nb:
+                new MaterialDialog.Builder(this)
+                        .title(R.string.number)
+                        .items(R.array.number_array)
+                        .itemsCallbackSingleChoice(def_nb, new MaterialDialog.ListCallbackSingleChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                def_nb = which;
+                                if (which != 8)
+                                    fragment.limit_views((which + 1) * 5);
+                                else
+                                    fragment.limit_views(0);
+                                return true;
+                            }
+                        })
+                        .positiveText(R.string.choose)
+                        .show();
+                return true;
+            case R.id.action_semester:
+                new MaterialDialog.Builder(this)
+                        .title(R.string.semester_choice)
+                        .items(R.array.semester_array)
+                        .itemsCallbackSingleChoice(def_semester, new MaterialDialog.ListCallbackSingleChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                def_semester = which;
+                                if (which != 11)
+                                    fragment.choose_semester("B" + Integer.toString(which) + "%");
+                                else
+                                    fragment.choose_semester("All");
+                                return true;
+                            }
+                        })
+                        .positiveText(R.string.choose)
+                        .show();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

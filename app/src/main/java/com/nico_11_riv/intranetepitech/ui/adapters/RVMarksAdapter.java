@@ -14,8 +14,11 @@ import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.Marks;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.ui.contents.Mark_content;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by nicol on 13/03/2016.
@@ -23,7 +26,7 @@ import java.util.List;
 
 public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHolder> {
 
-    static private GUser gUser = new GUser();
+    private GUser gUser = new GUser();
     private List<Mark_content> marks;
     private Context context;
 
@@ -57,7 +60,33 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void limit_views(int position) {
+        List<Marks> new_marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
+        marks.clear();
+        for (int i = new_marks.size() - 1; i > 0; i--) {
+            if (i == new_marks.size() - position - 1 && position != 0)
+                break;
+            Marks info = new_marks.get(i);
+            marks.add(new Mark_content(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+        }
+        notifyDataSetChanged();
+    }
+
+    public void choose_semester(String query) {
+        List<Marks> new_marks;
+        if (!Objects.equals(query, "All"))
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND titlemodule LIKE ?", gUser.getToken(), query);
+        else
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ?", gUser.getToken());
+        marks.clear();
+        for (int i = new_marks.size() - 1; i > 0; i--) {
+            Marks info = new_marks.get(i);
+            marks.add(new Mark_content(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+        }
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cv;
         TextView mark;
         TextView corrector;
@@ -78,7 +107,7 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
             module = (TextView) itemView.findViewById(R.id.module);
         }
 
-        public static String escape(String s) {
+        public String escape(String s) {
             StringBuilder builder = new StringBuilder();
             boolean previousWasASpace = false;
             for (char c : s.toCharArray()) {

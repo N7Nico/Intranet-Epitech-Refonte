@@ -6,8 +6,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
-
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sodales sagittis molestie.</string>
 
 
@@ -39,5 +37,37 @@
     <string name="corrector">corrector_l</string>
     <string name="project">Project</string>
     <string name="module">Module</string>
+
+    <string name="action_nb">NB</string>
+    <string name="action_semester">Semestre</string>
+
+    <string name="number">Nombre de notes à afficher</string>
+    <string-array name="number_array">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>Toutes</item>
+    </string-array>
+    <string name="choose">OK</string>
+    <string name="semester_choice">Semestre à afficher</string>
+    <string-array name="semester_array">
+        <item>Semestre 0</item>
+        <item>Semestre 1</item>
+        <item>Semestre 2</item>
+        <item>Semestre 3</item>
+        <item>Semestre 4</item>
+        <item>Semestre 5</item>
+        <item>Semestre 6</item>
+        <item>Semestre 7</item>
+        <item>Semestre 8</item>
+        <item>Semestre 9</item>
+        <item>Semestre 10</item>
+        <item>Tous</item>
+    </string-array>
 
 </resources>

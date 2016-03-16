@@ -155,7 +155,7 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     @Background
-    void profilemessages() {
+    void profile_messages() {
         setUserInfos();
         setMessages();
 
@@ -168,6 +168,6 @@ public class ProfileActivityFragment extends Fragment {
             background.setVisibility(View.GONE);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        profilemessages();
+        profile_messages();
     }
 }
