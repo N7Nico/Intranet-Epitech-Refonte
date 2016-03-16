@@ -6,8 +6,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sodales sagittis molestie.</string>
+    <string name="search_hint">Chercher</string>
 
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sodales sagittis molestie.</string>
 
     <!-- Values of login activity-->
 
@@ -38,6 +39,7 @@
     <string name="project">Project</string>
     <string name="module">Module</string>
 
+    <string name="action_search">Chercher</string>
     <string name="action_nb">NB</string>
     <string name="action_semester">Semestre</string>
 

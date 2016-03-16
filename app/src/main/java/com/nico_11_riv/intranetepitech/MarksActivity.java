@@ -1,5 +1,7 @@
 package com.nico_11_riv.intranetepitech;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -8,10 +10,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.database.User;
@@ -29,6 +33,8 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
 
     private static int def_nb = 8;
     private static int def_semester = 11;
+    private SearchManager searchManager;
+    private SearchView searchView;
 
     @FragmentById(R.id.fragment_marks)
     MarksActivityFragment fragment;
@@ -45,8 +51,20 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
     @ViewById
     NavigationView nav_view;
 
+    private void handleIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+
+            fragment.search(query);
+        }
+    }
+
     @AfterViews
     void init() {
+        def_nb = 8;
+        def_semester = 11;
+
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -54,11 +72,19 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
         toggle.syncState();
 
         nav_view.setNavigationItemSelectedListener(this);
+
+        handleIntent(getIntent());
     }
 
     @Click
     void fabClicked(View fab) {
         Snackbar.make(fab, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
     }
 
     @Override
@@ -74,6 +100,20 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_marks, menu);
+
+        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean queryTextFocused) {
+                if (!queryTextFocused) {
+                    searchView.setQuery("", false);
+                    fragment.filter(0, "All");
+                }
+            }
+        });
         return true;
     }
 
@@ -88,10 +128,17 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 def_nb = which;
-                                if (which != 8)
-                                    fragment.limit_views((which + 1) * 5);
-                                else
-                                    fragment.limit_views(0);
+                                if (def_nb != 8) {
+                                    if (def_semester != 11)
+                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
+                                    else
+                                        fragment.filter((def_nb + 1) * 5, "All");
+                                } else {
+                                    if (def_semester != 11)
+                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%");
+                                    else
+                                        fragment.filter(0, "All");
+                                }
                                 return true;
                             }
                         })
@@ -106,10 +153,17 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 def_semester = which;
-                                if (which != 11)
-                                    fragment.choose_semester("B" + Integer.toString(which) + "%");
-                                else
-                                    fragment.choose_semester("All");
+                                if (def_semester != 11)
+                                    if (def_nb != 8)
+                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
+                                    else
+                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%");
+                                else {
+                                    if (def_nb != 8)
+                                        fragment.filter((def_nb + 1) * 5, "All");
+                                    else
+                                        fragment.filter(0, "All");
+                                }
                                 return true;
                             }
                         })

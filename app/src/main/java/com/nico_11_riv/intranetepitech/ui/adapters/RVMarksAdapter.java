@@ -14,8 +14,6 @@ import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.Marks;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.ui.contents.Mark_content;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.util.List;
 import java.util.Objects;
@@ -60,8 +58,12 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void limit_views(int position) {
-        List<Marks> new_marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
+    public void filter(int position, String semester) {
+        List<Marks> new_marks;
+        if (!Objects.equals(semester, "All"))
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND titlemodule LIKE ?", gUser.getToken(), semester);
+        else
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ?", gUser.getToken());
         marks.clear();
         for (int i = new_marks.size() - 1; i > 0; i--) {
             if (i == new_marks.size() - position - 1 && position != 0)
@@ -72,12 +74,18 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    public void choose_semester(String query) {
+    public void search(String text) {
         List<Marks> new_marks;
-        if (!Objects.equals(query, "All"))
-            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND titlemodule LIKE ?", gUser.getToken(), query);
-        else
-            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ?", gUser.getToken());
+        new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND finalnote LIKE ?", gUser.getToken(), "%" + text + "%");
+        if (new_marks.size() == 0) {
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND title LIKE ?", gUser.getToken(), "%" + text + "%");
+            if (new_marks.size() == 0) {
+                new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND correcteur LIKE ?", gUser.getToken(), "%" + text + "%");
+                if (new_marks.size() == 0) {
+                    new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND titlemodule LIKE ?", gUser.getToken(), "%" + text + "%");
+                }
+            }
+        }
         marks.clear();
         for (int i = new_marks.size() - 1; i > 0; i--) {
             Marks info = new_marks.get(i);

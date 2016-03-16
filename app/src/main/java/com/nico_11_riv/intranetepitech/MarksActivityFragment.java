@@ -150,16 +150,16 @@ public class MarksActivityFragment extends Fragment {
         profile_marks();
     }
 
-    public void limit_views(int size) {
+    public void filter(int size, String semester) {
         if (adapter != null)
-            adapter.limit_views(size);
+            adapter.filter(size, semester);
         else
             Toast.makeText(getContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }
 
-    public void choose_semester(String semester) {
+    public void search(String text) {
         if (adapter != null)
-            adapter.choose_semester(semester);
+            adapter.search(text);
         else
             Toast.makeText(getContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }
