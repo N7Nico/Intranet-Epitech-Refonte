@@ -2,7 +2,6 @@ package com.nico_11_riv.intranetepitech.database.setters.infos;
 
 import android.util.Log;
 import android.webkit.URLUtil;
-import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.database.Allmodules;
@@ -16,8 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,13 +143,7 @@ public class Pproject {
             e.printStackTrace();
         }
         try {
-            Projects project = null;
-            List<Projects> p = Projects.findWithQuery(Projects.class, "SELECT * FROM Projects WHERE token = ? AND codeacti = ?", user.getToken(), ori.getString("codeacti"));
-            if (p.size() > 0) {
-                project = p.get(0);
-            } else {
-                project = new Projects(this.user.getToken());
-            }
+            Projects project = new Projects(this.user.getToken());
             project.setScolaryear(ori.getString("scolaryear"));
             project.setCodemodule(ori.getString("codemodule"));
             project.setCodeinstance(ori.getString("codeinstance"));
@@ -201,10 +192,6 @@ public class Pproject {
                     e.printStackTrace();
                 }
             }
-            /*List<Projects> pr = Projects.findWithQuery(Projects.class, "Select * FROM Projects WHERE codeacti = ?", ori.getString("codeacti"));
-            if (pr.size() == 0) {
-                project.save();
-            }*/
             project.save();
         } catch (JSONException e) {
             e.printStackTrace();

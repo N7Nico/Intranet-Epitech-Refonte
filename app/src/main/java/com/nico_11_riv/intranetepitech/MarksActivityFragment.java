@@ -55,9 +55,12 @@ public class MarksActivityFragment extends Fragment {
     @ViewById
     ProgressBar marks_progress;
     private ArrayList<Mark_content> items;
+    private List<Marks> marks;
     private GUser gUser = new GUser();
-    private Guserinfos user_info;
+    private Guserinfos user_info = new Guserinfos();
     private RVMarksAdapter adapter;
+    private TextView tv;
+    private ImageView iv;
 
     @AfterInject
     void afterInject() {
@@ -74,7 +77,7 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void fillmarksui() {
-        List<Marks> marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
+        marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
         items = new ArrayList<Mark_content>();
         for (int i = marks.size() - 1; i > 0; i--) {
             Marks info = marks.get(i);
@@ -84,15 +87,18 @@ public class MarksActivityFragment extends Fragment {
 
     @UiThread
     void filluserinfosui() {
-        TextView tv = (TextView)getActivity().findViewById(R.id.menu_login);
+        tv = (TextView) getActivity().findViewById(R.id.menu_login);
         tv.setText(user_info.getLogin());
         tv = (TextView)getActivity().findViewById(R.id.menu_email);
         tv.setText(user_info.getEmail());
-        ImageView iv = (ImageView)getActivity().findViewById(R.id.menu_img);
+        iv = (ImageView) getActivity().findViewById(R.id.menu_img);
         Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
     }
 
     void setUserInfos() {
+        List <Userinfos> uinfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
+        if (uinfos.size() > 0)
+            filluserinfosui();
         Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {

@@ -18,14 +18,7 @@ public class PMarks {
                 JSONArray marks = json.getJSONArray("notes");
                 for (int i = 0; i < marks.length(); ++i) {
                     JSONObject tmp = marks.getJSONObject(i);
-                    Marks note = null;
-                    List<Marks> m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND codeacti = ?", user.getToken(), tmp.getString("codeacti"));
-                    if (m.size() > 0) {
-                        note = m.get(0);
-                    }
-                    else {
-                        note = new Marks(user.getToken());
-                    }
+                    Marks note = new Marks(user.getToken());
                     note.setScolyear(tmp.getString("scolaryear"));
                     note.setCodemodule(tmp.getString("codemodule"));
                     note.setTitlemodule(tmp.getString("titlemodule"));
