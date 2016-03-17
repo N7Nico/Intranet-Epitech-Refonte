@@ -61,6 +61,8 @@ public class MarksActivityFragment extends Fragment {
     private RVMarksAdapter adapter;
     private TextView tv;
     private ImageView iv;
+    private static int def_nb = 8;
+    private static int def_semester = 11;
 
     @AfterInject
     void afterInject() {
@@ -70,9 +72,6 @@ public class MarksActivityFragment extends Fragment {
     @UiThread
     void setadpt(ArrayList<Mark_content> items) {
         adapter = new RVMarksAdapter(items, getContext());
-
-        marks_progress.setVisibility(View.GONE);
-
         rv.setAdapter(adapter);
     }
 
@@ -83,6 +82,7 @@ public class MarksActivityFragment extends Fragment {
             Marks info = marks.get(i);
             items.add(new Mark_content(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
+        setadpt(items);
     }
 
     @UiThread
@@ -93,6 +93,22 @@ public class MarksActivityFragment extends Fragment {
         tv.setText(user_info.getEmail());
         iv = (ImageView) getActivity().findViewById(R.id.menu_img);
         Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
+    }
+
+    @UiThread
+    void fillnewmarksui() {
+        marks_progress.setVisibility(View.GONE);
+        if (def_nb != 8) {
+            if (def_semester != 11)
+                adapter.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
+            else
+                adapter.filter((def_nb + 1) * 5, "All");
+        } else {
+            if (def_semester != 11)
+                adapter.filter(0, "B" + Integer.toString(def_semester) + "%");
+            else
+                adapter.filter(0, "All");
+        }
     }
 
     void setUserInfos() {
@@ -115,7 +131,7 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void setMarks() {
-        Marks.deleteAll(Marks.class, "token = ?", gUser.getToken());
+        fillmarksui();
         String m = null;
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
@@ -138,15 +154,13 @@ public class MarksActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        fillmarksui();
+        fillnewmarksui();
     }
 
     @Background
     void profile_marks() {
         setUserInfos();
         setMarks();
-
-        setadpt(items);
     }
 
     @AfterViews
@@ -156,9 +170,12 @@ public class MarksActivityFragment extends Fragment {
         profile_marks();
     }
 
-    public void filter(int size, String semester) {
-        if (adapter != null)
+    public void filter(int size, String semester, int def_nb_act, int def_semester_act) {
+        if (adapter != null) {
+            def_nb = def_nb_act;
+            def_semester = def_semester_act;
             adapter.filter(size, semester);
+        }
         else
             Toast.makeText(getContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }

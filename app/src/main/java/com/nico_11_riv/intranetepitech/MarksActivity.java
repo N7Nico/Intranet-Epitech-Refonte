@@ -110,7 +110,7 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
             public void onFocusChange(View view, boolean queryTextFocused) {
                 if (!queryTextFocused) {
                     searchView.setQuery("", false);
-                    fragment.filter(0, "All");
+                    fragment.filter(0, "All", def_nb, def_semester);
                 }
             }
         });
@@ -130,14 +130,14 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
                                 def_nb = which;
                                 if (def_nb != 8) {
                                     if (def_semester != 11)
-                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
+                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
                                     else
-                                        fragment.filter((def_nb + 1) * 5, "All");
+                                        fragment.filter((def_nb + 1) * 5, "All", def_nb, def_semester);
                                 } else {
                                     if (def_semester != 11)
-                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%");
+                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
                                     else
-                                        fragment.filter(0, "All");
+                                        fragment.filter(0, "All", def_nb, def_semester);
                                 }
                                 return true;
                             }
@@ -155,14 +155,14 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
                                 def_semester = which;
                                 if (def_semester != 11)
                                     if (def_nb != 8)
-                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
+                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
                                     else
-                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%");
+                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
                                 else {
                                     if (def_nb != 8)
-                                        fragment.filter((def_nb + 1) * 5, "All");
+                                        fragment.filter((def_nb + 1) * 5, "All", def_nb, def_semester);
                                     else
-                                        fragment.filter(0, "All");
+                                        fragment.filter(0, "All", def_nb, def_semester);
                                 }
                                 return true;
                             }

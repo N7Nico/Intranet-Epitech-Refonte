@@ -5,6 +5,7 @@ import com.orm.SugarRecord;
 
 public class Marks extends SugarRecord {
     private String token;
+    private boolean old;
     private String scolyear;
     private String codemodule;
     private String titlemodule;
@@ -18,11 +19,13 @@ public class Marks extends SugarRecord {
 
     public Marks () {
         GUser user = new GUser();
-        token = user.getToken();
+        this.token = user.getToken();
+        this.old = false;
     }
 
     public Marks (String token) {
         this.token = token;
+        this.old = false;
     }
 
     public String getToken() {
@@ -31,6 +34,14 @@ public class Marks extends SugarRecord {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isOld() {
+        return old;
+    }
+
+    public void setOld(boolean old) {
+        this.old = old;
     }
 
     public String getScolyear() {
