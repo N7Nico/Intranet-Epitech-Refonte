@@ -10,7 +10,10 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class PMarks {
-    public PMarks(String api) {
+    public PMarks() {
+    }
+
+    public void init(String api) {
         GUser user = new GUser();
         try {
             JSONObject json = new JSONObject(api);

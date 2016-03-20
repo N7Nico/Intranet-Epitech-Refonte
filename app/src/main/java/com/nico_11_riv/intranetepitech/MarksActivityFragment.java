@@ -14,13 +14,13 @@ import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.database.Marks;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
-import com.nico_11_riv.intranetepitech.database.setters.infos.CircleTransform;
-import com.nico_11_riv.intranetepitech.database.setters.infos.Guserinfos;
-import com.nico_11_riv.intranetepitech.database.setters.infos.Puserinfos;
+import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
+import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
+import com.nico_11_riv.intranetepitech.database.setters.user.PUserInfos;
 import com.nico_11_riv.intranetepitech.database.setters.marks.PMarks;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.ui.adapters.RVMarksAdapter;
-import com.nico_11_riv.intranetepitech.ui.contents.Mark_content;
+import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.squareup.picasso.Picasso;
@@ -54,10 +54,10 @@ public class MarksActivityFragment extends Fragment {
     RecyclerView rv;
     @ViewById
     ProgressBar marks_progress;
-    private ArrayList<Mark_content> items;
+    private ArrayList<MarkContent> items;
     private List<Marks> marks;
     private GUser gUser = new GUser();
-    private Guserinfos user_info = new Guserinfos();
+    private GUserInfos user_info = new GUserInfos();
     private RVMarksAdapter adapter;
     private TextView tv;
     private ImageView iv;
@@ -70,17 +70,17 @@ public class MarksActivityFragment extends Fragment {
     }
 
     @UiThread
-    void setadpt(ArrayList<Mark_content> items) {
+    void setadpt(ArrayList<MarkContent> items) {
         adapter = new RVMarksAdapter(items, getContext());
         rv.setAdapter(adapter);
     }
 
     void fillmarksui() {
         marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<Mark_content>();
+        items = new ArrayList<>();
         for (int i = marks.size() - 1; i > 0; i--) {
             Marks info = marks.get(i);
-            items.add(new Mark_content(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
         setadpt(items);
     }
@@ -112,13 +112,14 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uinfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
-        if (uinfos.size() > 0)
+        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
+        if (uInfos.size() > 0)
             filluserinfosui();
         Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
-            Puserinfos infos = new Puserinfos(api.getuserinfo(gUser.getLogin()));
+            PUserInfos infos = new PUserInfos();
+            infos.init(api.getuserinfo(gUser.getLogin()));
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
@@ -126,7 +127,7 @@ public class MarksActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        user_info = new Guserinfos();
+        user_info = new GUserInfos();
         filluserinfosui();
     }
 
@@ -143,7 +144,8 @@ public class MarksActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        PMarks marks = new PMarks(m);
+        PMarks marks = new PMarks();
+        marks.init(m);
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
             api.getuserinfo(gUser.getLogin());

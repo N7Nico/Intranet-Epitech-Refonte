@@ -1,11 +1,10 @@
-package com.nico_11_riv.intranetepitech.database.setters.infos;
+package com.nico_11_riv.intranetepitech.database.setters.user;
 
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
 
 import java.util.List;
 
-public class Guserinfos {
+public class GUserInfos {
     private String token;
     private String login;
     private String title;
@@ -21,7 +20,7 @@ public class Guserinfos {
     private String credits;
     private String gpa;
 
-    public Guserinfos() {
+    public GUserInfos() {
         GUser gUser = new GUser();
         if (gUser.getToken() != null) {
             List<Userinfos> infos = Userinfos.find(Userinfos.class, "token = ?", gUser.getToken());
@@ -36,7 +35,7 @@ public class Guserinfos {
             this.promo = info.getPromo();
             this.semester = info.getSemester();
             this.location = info.getLocation();
-            this.course_code = info.getCourse_code();
+            this.course_code = info.getCoursecode();
             this.studentyear = info.getStudentyear();
             this.credits = info.getCredits();
             this.gpa = info.getGpa();

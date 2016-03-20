@@ -16,13 +16,13 @@ import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.database.Messages;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
-import com.nico_11_riv.intranetepitech.database.setters.infos.CircleTransform;
-import com.nico_11_riv.intranetepitech.database.setters.infos.Guserinfos;
-import com.nico_11_riv.intranetepitech.database.setters.infos.Puserinfos;
-import com.nico_11_riv.intranetepitech.database.setters.messages.Pmessages;
+import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
+import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
+import com.nico_11_riv.intranetepitech.database.setters.user.PUserInfos;
+import com.nico_11_riv.intranetepitech.database.setters.messages.PMessages;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.ui.adapters.RVMessagesAdapter;
-import com.nico_11_riv.intranetepitech.ui.contents.Message_content;
+import com.nico_11_riv.intranetepitech.ui.contents.MessageContent;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.squareup.picasso.Picasso;
@@ -79,9 +79,9 @@ public class ProfileActivityFragment extends Fragment {
     @ViewById
     ProgressBar messages_progress;
 
-    private ArrayList<Message_content> items;
+    private ArrayList<MessageContent> items;
     private GUser gUser = new GUser();
-    private Guserinfos user_info;
+    private GUserInfos user_info = new GUserInfos();
 
     @AfterInject
     void afterInject() {
@@ -89,7 +89,7 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     @UiThread
-    void setadpt(ArrayList<Message_content> items) {
+    void setadpt(ArrayList<MessageContent> items) {
         RVMessagesAdapter adapter = new RVMessagesAdapter(items, getContext());
 
         messages_progress.setVisibility(View.GONE);
@@ -99,10 +99,10 @@ public class ProfileActivityFragment extends Fragment {
 
     void fillmessagesui() {
         List<Messages> messages = Select.from(Messages.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<Message_content>();
+        items = new ArrayList<>();
         for (int i = 0; i < messages.size(); i++) {
             Messages info = messages.get(i);
-            items.add(new Message_content(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin().toString(), Html.fromHtml(info.getContent()).toString()));
+            items.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
         }
     }
 
@@ -124,10 +124,14 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
+        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
+        if (uInfos.size() > 0)
+            filluserinfosui();
         Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
-            Puserinfos infos = new Puserinfos(api.getuserinfo(gUser.getLogin()));
+            PUserInfos infos = new PUserInfos();
+            infos.init(api.getuserinfo(gUser.getLogin()));
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
@@ -135,7 +139,7 @@ public class ProfileActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        user_info = new Guserinfos();
+        user_info = new GUserInfos();
         filluserinfosui();
     }
 
@@ -143,7 +147,8 @@ public class ProfileActivityFragment extends Fragment {
         Messages.deleteAll(Messages.class, "token = ?", gUser.getToken());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
-            Pmessages msg = new Pmessages(api.getnotifs());
+            PMessages msgs = new PMessages();
+            msgs.init(api.getnotifs());
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();

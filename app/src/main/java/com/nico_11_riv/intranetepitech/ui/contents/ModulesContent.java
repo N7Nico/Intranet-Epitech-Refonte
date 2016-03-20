@@ -1,12 +1,12 @@
 package com.nico_11_riv.intranetepitech.ui.contents;
 
-public class Modules_content {
+public class ModulesContent {
     private String grade;
     private String modulename;
     private String timeline;
     private String codeModule;
 
-    public Modules_content(String grade, String modulename, String timeline, String codeModule) {
+    public ModulesContent(String grade, String modulename, String timeline, String codeModule) {
         super();
         this.grade = grade;
         this.modulename = modulename;

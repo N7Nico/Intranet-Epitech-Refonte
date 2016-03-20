@@ -18,7 +18,7 @@ public class Planning extends SugarRecord {
     private String resigtermodule;
     private String registerevent;
     private String regstudent;
-    private String allow_token;
+    private String allowtoken;
     private String typecode;
 
     public Planning() {
@@ -142,12 +142,12 @@ public class Planning extends SugarRecord {
         this.regstudent = regstudent;
     }
 
-    public String getAllow_token() {
-        return allow_token;
+    public String getAllowtoken() {
+        return allowtoken;
     }
 
-    public void setAllow_token(String allow_token) {
-        this.allow_token = allow_token;
+    public void setAllowtoken(String allowtoken) {
+        this.allowtoken = allowtoken;
     }
 
     public String getTypecode() {

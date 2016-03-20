@@ -13,7 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.Marks;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
-import com.nico_11_riv.intranetepitech.ui.contents.Mark_content;
+import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,10 +25,10 @@ import java.util.Objects;
 public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHolder> {
 
     private GUser gUser = new GUser();
-    private List<Mark_content> marks;
+    private List<MarkContent> marks;
     private Context context;
 
-    public RVMarksAdapter(List<Mark_content> persons, Context context) {
+    public RVMarksAdapter(List<MarkContent> persons, Context context) {
         this.marks = persons;
         this.context = context;
     }
@@ -69,7 +69,7 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
             if (i == new_marks.size() - position - 1 && position != 0)
                 break;
             Marks info = new_marks.get(i);
-            marks.add(new Mark_content(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
         notifyDataSetChanged();
     }
@@ -89,7 +89,7 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
         marks.clear();
         for (int i = new_marks.size() - 1; i > 0; i--) {
             Marks info = new_marks.get(i);
-            marks.add(new Mark_content(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
         notifyDataSetChanged();
     }

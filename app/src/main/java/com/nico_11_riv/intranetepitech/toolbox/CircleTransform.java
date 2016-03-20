@@ -1,4 +1,4 @@
-package com.nico_11_riv.intranetepitech.database.setters.infos;
+package com.nico_11_riv.intranetepitech.toolbox;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

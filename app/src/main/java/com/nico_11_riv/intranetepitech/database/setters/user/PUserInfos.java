@@ -1,13 +1,15 @@
-package com.nico_11_riv.intranetepitech.database.setters.infos;
+package com.nico_11_riv.intranetepitech.database.setters.user;
 
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Puserinfos {
-    public Puserinfos(String api) {
+public class PUserInfos {
+    public PUserInfos() {
+    }
+
+    public void init(String api) {
         try {
             GUser u = new GUser();
             JSONObject json = new JSONObject(api);
@@ -23,7 +25,7 @@ public class Puserinfos {
                 userinfos.setPromo(json.getString("promo"));
                 userinfos.setSemester(json.getString("semester"));
                 userinfos.setLocation(json.getString("location"));
-                userinfos.setCourse_code(json.getString("course_code"));
+                userinfos.setCoursecode(json.getString("course_code"));
                 userinfos.setStudentyear(json.getString("studentyear"));
                 userinfos.setCredits(json.getString("credits"));
                 userinfos.setGpa(json.getJSONArray("gpa").getJSONObject(0).getString("gpa"));

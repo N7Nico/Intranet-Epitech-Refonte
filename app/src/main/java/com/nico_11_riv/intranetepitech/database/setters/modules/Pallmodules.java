@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * Created by Jimmy on 10/02/2016.
  */
-public class Pallmodules {
-    public Pallmodules(String api) {
+public class PAllModules {
+    public PAllModules(String api) {
         GUser u = new GUser();
         try {
             JSONArray arr = new JSONArray(api);

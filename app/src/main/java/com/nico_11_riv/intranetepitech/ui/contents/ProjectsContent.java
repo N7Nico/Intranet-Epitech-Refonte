@@ -1,11 +1,11 @@
 package com.nico_11_riv.intranetepitech.ui.contents;
 
-public class Projects_content {
+public class ProjectsContent {
     private String projectName;
     private String endDate;
     private String startDate;
 
-    public Projects_content(String projectName, String endDate, String startDate) {
+    public ProjectsContent(String projectName, String endDate, String startDate) {
         this.projectName = projectName;
         this.endDate = endDate;
         this.startDate = startDate;

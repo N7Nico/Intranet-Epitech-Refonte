@@ -10,8 +10,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class Pmodules {
-    public Pmodules(String api) {
+public class PModules {
+    public PModules(String api) {
         GUser user = new GUser();
         try {
             JSONObject obj = new JSONObject(api);

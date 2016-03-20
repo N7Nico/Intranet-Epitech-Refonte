@@ -7,8 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Pmessages {
-    public Pmessages(String api) {
+public class PMessages {
+    public PMessages() {
+    }
+
+    public void init(String api) {
         GUser user = new GUser();
         try {
             JSONArray messages = new JSONArray(api);

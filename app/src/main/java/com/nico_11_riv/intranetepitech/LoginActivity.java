@@ -3,6 +3,7 @@ package com.nico_11_riv.intranetepitech;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,7 +17,7 @@ import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.api.requests.LoginRequest;
 import com.nico_11_riv.intranetepitech.database.User;
-import com.nico_11_riv.intranetepitech.database.setters.user.SUser;
+import com.nico_11_riv.intranetepitech.database.setters.user.PUser;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -41,12 +42,16 @@ public class LoginActivity extends AppCompatActivity {
 
     @Bean
     APIErrorHandler ErrorHandler;
+
     @ViewById
     AutoCompleteTextView vlogin;
+
     @ViewById
     EditText vpasswd;
+
     @ViewById
     Button login_button;
+
     @ViewById
     ProgressBar login_progress;
 
@@ -75,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         return (sb.toString());
     }
 
-    boolean check_user(String token, String login) {
+    boolean check_user(String login) {
         String restapi = api.getuserinfo(login);
         try {
             JSONObject json = new JSONObject(restapi);
@@ -115,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         api.setCookie("PHPSESSID", tokengenerate);
         try {
             api.sendToken(lr);
-            if (check_user(tokengenerate, login)) {
+            if (check_user(login)) {
                 User u = new User(login, passwd, tokengenerate, "true");
                 u.save();
                 return false;
@@ -181,7 +186,8 @@ public class LoginActivity extends AppCompatActivity {
         }
         else {
             if (User.count(User.class, "login = ? and passwd = ?", new String[]{login, passwd}) == 1) {
-                SUser sUser = new SUser(login);
+                PUser pUser = new PUser();
+                pUser.init(login);
                 startActivity(new Intent(this, ProfileActivity_.class));
             } else if (User.count(User.class, "login = ?", new String[]{login}) == 1) {
                 error_connect("Mauvais Mot de Passe");
@@ -199,5 +205,10 @@ public class LoginActivity extends AppCompatActivity {
     void SignInClicked() {
         login_progress.setVisibility(View.VISIBLE);
         attemptLogin();
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

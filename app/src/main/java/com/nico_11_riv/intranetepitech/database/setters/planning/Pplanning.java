@@ -12,8 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class Pplanning {
-    public Pplanning(String api) {
+public class PPlanning {
+    public PPlanning(String api) {
         GUser user = new GUser();
         try {
             JSONArray planning = new JSONArray(api);
@@ -32,7 +32,7 @@ public class Pplanning {
                     pl.setStart(tmp.getString("start"));
                     pl.setEnd(tmp.getString("end"));
                     pl.setResigtermodule(tmp.getString("module_registered"));
-                    pl.setAllow_token(tmp.getString("allow_token"));
+                    pl.setAllowtoken(tmp.getString("allow_token"));
                     pl.setRegisterevent(tmp.getString("event_registered"));
                     pl.setTypecode(tmp.getString("type_code"));
                     pl.save();

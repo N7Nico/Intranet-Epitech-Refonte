@@ -10,12 +10,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.database.User;
@@ -96,6 +95,20 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
+    void sendFilters() {
+        if (def_nb != 8) {
+            if (def_semester != 11)
+                fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
+            else
+                fragment.filter((def_nb + 1) * 5, "All", def_nb, def_semester);
+        } else {
+            if (def_semester != 11)
+                fragment.filter(0, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
+            else
+                fragment.filter(0, "All", def_nb, def_semester);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -110,7 +123,7 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
             public void onFocusChange(View view, boolean queryTextFocused) {
                 if (!queryTextFocused) {
                     searchView.setQuery("", false);
-                    fragment.filter(0, "All", def_nb, def_semester);
+                    sendFilters();
                 }
             }
         });
@@ -127,17 +140,9 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
                         .itemsCallbackSingleChoice(def_nb, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                def_nb = which;
-                                if (def_nb != 8) {
-                                    if (def_semester != 11)
-                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
-                                    else
-                                        fragment.filter((def_nb + 1) * 5, "All", def_nb, def_semester);
-                                } else {
-                                    if (def_semester != 11)
-                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
-                                    else
-                                        fragment.filter(0, "All", def_nb, def_semester);
+                                if (def_nb != which){
+                                    def_nb = which;
+                                    sendFilters();
                                 }
                                 return true;
                             }
@@ -152,17 +157,9 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
                         .itemsCallbackSingleChoice(def_semester, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                def_semester = which;
-                                if (def_semester != 11)
-                                    if (def_nb != 8)
-                                        fragment.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
-                                    else
-                                        fragment.filter(0, "B" + Integer.toString(def_semester) + "%", def_nb, def_semester);
-                                else {
-                                    if (def_nb != 8)
-                                        fragment.filter((def_nb + 1) * 5, "All", def_nb, def_semester);
-                                    else
-                                        fragment.filter(0, "All", def_nb, def_semester);
+                                if (def_semester != which) {
+                                    def_semester = which;
+                                    sendFilters();
                                 }
                                 return true;
                             }

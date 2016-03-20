@@ -15,7 +15,7 @@ public class Userinfos extends SugarRecord {
     private String promo;
     private String semester;
     private String location;
-    private String course_code;
+    private String coursecode;
     private String studentyear;
     private String credits;
     private String gpa;
@@ -85,6 +85,14 @@ public class Userinfos extends SugarRecord {
         this.picture = picture;
     }
 
+    public String getScolaryear() {
+        return scolaryear;
+    }
+
+    public void setScolaryear(String scolaryear) {
+        this.scolaryear = scolaryear;
+    }
+
     public String getPromo() {
         return promo;
     }
@@ -109,12 +117,12 @@ public class Userinfos extends SugarRecord {
         this.location = location;
     }
 
-    public String getCourse_code() {
-        return course_code;
+    public String getCoursecode() {
+        return coursecode;
     }
 
-    public void setCourse_code(String course_code) {
-        this.course_code = course_code;
+    public void setCoursecode(String coursecode) {
+        this.coursecode = coursecode;
     }
 
     public String getStudentyear() {
@@ -139,13 +147,5 @@ public class Userinfos extends SugarRecord {
 
     public void setGpa(String gpa) {
         this.gpa = gpa;
-    }
-
-    public String getScolaryear() {
-        return scolaryear;
-    }
-
-    public void setScolaryear(String scolaryear) {
-        this.scolaryear = scolaryear;
     }
 }

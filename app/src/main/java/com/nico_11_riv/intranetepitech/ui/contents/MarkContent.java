@@ -1,13 +1,13 @@
 package com.nico_11_riv.intranetepitech.ui.contents;
 
-public class Mark_content {
+public class MarkContent {
     private String mark;
     private String corrector;
     private String event;
     private String module;
     private String content;
 
-    public Mark_content(String mark, String corrector, String event, String module, String content) {
+    public MarkContent(String mark, String corrector, String event, String module, String content) {
         super();
         this.mark = mark;
         this.corrector = corrector;

@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
-import com.nico_11_riv.intranetepitech.database.setters.infos.CircleTransform;
-import com.nico_11_riv.intranetepitech.ui.contents.Message_content;
+import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
+import com.nico_11_riv.intranetepitech.ui.contents.MessageContent;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,10 +25,10 @@ import java.util.List;
 
 public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.ViewHolder> {
 
-    private List<Message_content> messages;
+    private List<MessageContent> messages;
     private Context context;
 
-    public RVMessagesAdapter(List<Message_content> messages, Context context) {
+    public RVMessagesAdapter(List<MessageContent> messages, Context context) {
         this.messages = messages;
         this.context = context;
     }
