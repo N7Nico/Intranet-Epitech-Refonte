@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
+import com.nico_11_riv.intranetepitech.database.Messages;
+import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
 import com.nico_11_riv.intranetepitech.ui.contents.MessageContent;
 import com.squareup.picasso.Picasso;
@@ -25,12 +27,24 @@ import java.util.List;
 
 public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.ViewHolder> {
 
+    private GUser gUser = new GUser();
     private List<MessageContent> messages;
     private Context context;
 
     public RVMessagesAdapter(List<MessageContent> messages, Context context) {
         this.messages = messages;
         this.context = context;
+    }
+
+    public void background() {
+        List<Messages> new_messages = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE token = ?", gUser.getToken());
+
+        messages.clear();
+        for (int i = 0; i < new_messages.size(); i++) {
+            Messages info = new_messages.get(i);
+            messages.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -62,7 +76,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cv;
         ImageView person_img;
         TextView date;

@@ -7,6 +7,8 @@ import com.orm.SugarRecord;
 
 public class Messages extends SugarRecord {
     private String token;
+    private boolean old;
+    private String idmessage;
     private String title;
     private String content;
     private String date;
@@ -16,10 +18,12 @@ public class Messages extends SugarRecord {
     public Messages () {
         GUser user = new GUser();
         this.token = user.getToken();
+        this.old = false;
     }
 
     public Messages(String token) {
         this.token = token;
+        this.old = false;
     }
 
     public String getToken() {
@@ -30,8 +34,32 @@ public class Messages extends SugarRecord {
         this.token = token;
     }
 
+    public boolean isOld() {
+        return old;
+    }
+
+    public void setOld(boolean old) {
+        this.old = old;
+    }
+
+    public String getIdmessage() {
+        return idmessage;
+    }
+
+    public void setIdmessage(String idmessage) {
+        this.idmessage = idmessage;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getContent() {
-        return Html.fromHtml(content).toString();
+        return content;
     }
 
     public void setContent(String content) {
@@ -44,14 +72,6 @@ public class Messages extends SugarRecord {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getLogin() {

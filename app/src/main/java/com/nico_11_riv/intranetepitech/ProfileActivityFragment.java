@@ -81,7 +81,8 @@ public class ProfileActivityFragment extends Fragment {
 
     private ArrayList<MessageContent> items;
     private GUser gUser = new GUser();
-    private GUserInfos user_info = new GUserInfos();
+    private GUserInfos user_info;
+    private RVMessagesAdapter adapter;
 
     @AfterInject
     void afterInject() {
@@ -90,20 +91,9 @@ public class ProfileActivityFragment extends Fragment {
 
     @UiThread
     void setadpt(ArrayList<MessageContent> items) {
-        RVMessagesAdapter adapter = new RVMessagesAdapter(items, getContext());
-
-        messages_progress.setVisibility(View.GONE);
+        adapter = new RVMessagesAdapter(items, getContext());
 
         rv.setAdapter(adapter);
-    }
-
-    void fillmessagesui() {
-        List<Messages> messages = Select.from(Messages.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<>();
-        for (int i = 0; i < messages.size(); i++) {
-            Messages info = messages.get(i);
-            items.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
-        }
     }
 
     @UiThread
@@ -123,11 +113,27 @@ public class ProfileActivityFragment extends Fragment {
         credits_content.setText(user_info.getCredits());
     }
 
+    void fillmessagesui() {
+        List<Messages> messages = Select.from(Messages.class).where(Condition.prop("token").eq(gUser.getToken())).list();
+        items = new ArrayList<>();
+        for (int i = 0; i < messages.size(); i++) {
+            Messages info = messages.get(i);
+            items.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
+        }
+        setadpt(items);
+    }
+
+    @UiThread
+    void fillnewmessagesui() {
+        messages_progress.setVisibility(View.GONE);
+        adapter.background();
+    }
+
     void setUserInfos() {
         List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
         if (uInfos.size() > 0)
             filluserinfosui();
-        Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
+       Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
             PUserInfos infos = new PUserInfos();
@@ -144,7 +150,7 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void setMessages() {
-        Messages.deleteAll(Messages.class, "token = ?", gUser.getToken());
+        fillmessagesui();
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
             PMessages msgs = new PMessages();
@@ -156,15 +162,13 @@ public class ProfileActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        fillmessagesui();
+        fillnewmessagesui();
     }
 
     @Background
     void profile_messages() {
         setUserInfos();
         setMessages();
-
-        setadpt(items);
     }
 
     @AfterViews

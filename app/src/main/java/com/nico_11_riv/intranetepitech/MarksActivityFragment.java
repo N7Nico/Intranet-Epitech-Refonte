@@ -75,16 +75,6 @@ public class MarksActivityFragment extends Fragment {
         rv.setAdapter(adapter);
     }
 
-    void fillmarksui() {
-        marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<>();
-        for (int i = marks.size() - 1; i > 0; i--) {
-            Marks info = marks.get(i);
-            items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
-        }
-        setadpt(items);
-    }
-
     @UiThread
     void filluserinfosui() {
         tv = (TextView) getActivity().findViewById(R.id.menu_login);
@@ -93,6 +83,16 @@ public class MarksActivityFragment extends Fragment {
         tv.setText(user_info.getEmail());
         iv = (ImageView) getActivity().findViewById(R.id.menu_img);
         Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
+    }
+
+    void fillmarksui() {
+        marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
+        items = new ArrayList<>();
+        for (int i = marks.size() - 1; i > 0; i--) {
+            Marks info = marks.get(i);
+            items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+        }
+        setadpt(items);
     }
 
     @UiThread
