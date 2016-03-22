@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="200dp">
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/background"
@@ -30,11 +30,8 @@
                 android:id="@+id/student_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/background"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:contentDescription="@string/student_img_desc" />
 
             <TextView
@@ -42,8 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/student_img"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_centerHorizontal="true"
                 android:text="@string/login_n"
                 android:textColor="#fff"
                 android:textStyle="bold" />
@@ -53,9 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/login"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="16dp"
+                android:layout_centerHorizontal="true"
                 android:text="@string/email"
                 android:textColor="#fff" />
 
@@ -64,10 +58,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/background"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="3dp"
-                android:layout_marginTop="16dp"
                 android:layout_toStartOf="@+id/gpa_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="3dp"
                 android:text="@string/gpa"
                 android:textColor="#fff"
                 android:textStyle="bold" />
@@ -76,10 +69,10 @@
                 android:id="@+id/gpa_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_below="@+id/background"
-                android:layout_marginEnd="16dp"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/na"
                 android:textColor="#fff" />
 
@@ -87,10 +80,10 @@
                 android:id="@+id/promo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/gpa"
-                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/background"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="3dp"
-                android:layout_toStartOf="@+id/promo_content"
                 android:text="@string/promo"
                 android:textColor="#fff"
                 android:textStyle="bold" />
@@ -99,8 +92,9 @@
                 android:id="@+id/promo_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/gpa"
-                android:layout_toStartOf="@+id/gpa"
+                android:layout_below="@+id/background"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@id/promo"
                 android:text="@string/na"
                 android:textColor="#fff" />
 
@@ -108,10 +102,10 @@
                 android:id="@+id/semester"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/promo"
-                android:layout_marginBottom="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="3dp"
-                android:layout_toStartOf="@+id/semester_content"
                 android:text="@string/semester"
                 android:textColor="#fff"
                 android:textStyle="bold" />
@@ -120,8 +114,9 @@
                 android:id="@+id/semester_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/promo"
-                android:layout_toStartOf="@+id/gpa"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/semester"
+                android:layout_marginBottom="16dp"
                 android:text="@string/na"
                 android:textColor="#fff" />
 
@@ -129,9 +124,10 @@
                 android:id="@+id/credits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/semester"
-                android:layout_marginEnd="3dp"
+                android:layout_alignParentBottom="true"
                 android:layout_toStartOf="@+id/credits_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="3dp"
                 android:text="@string/credits"
                 android:textColor="#fff"
                 android:textStyle="bold" />
@@ -140,9 +136,10 @@
                 android:id="@+id/credits_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/semester"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/na"
                 android:textColor="#fff" />
 

@@ -131,8 +131,10 @@ public class ProfileActivityFragment extends Fragment {
 
     void setUserInfos() {
         List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
-        if (uInfos.size() > 0)
+        if (uInfos.size() > 0) {
+            user_info = new GUserInfos();
             filluserinfosui();
+        }
        Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
