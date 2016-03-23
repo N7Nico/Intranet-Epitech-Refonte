@@ -4,7 +4,7 @@ import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 public class Marks extends SugarRecord {
-    private String token;
+    private String login;
     private boolean old;
     private String scolyear;
     private String codemodule;
@@ -18,22 +18,19 @@ public class Marks extends SugarRecord {
     private String comment;
 
     public Marks () {
-        GUser user = new GUser();
-        this.token = user.getToken();
+    }
+
+    public Marks (String login) {
+        this.login = login;
         this.old = false;
     }
 
-    public Marks (String token) {
-        this.token = token;
-        this.old = false;
+    public String getLogin() {
+        return login;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public boolean isOld() {

@@ -114,8 +114,8 @@ public class PProject {
     }
 
     public PProject(IntrAPI api) {
-        List<Allmodules> allmodules = Allmodules.findWithQuery(Allmodules.class, "SELECT * FROM Allmodules WHERE token = ?", this.user.getToken());
-        List<Modules> modules= Modules.findWithQuery(Modules.class, "SELECT * FROM Modules WHERE token = ?", this.user.getToken());
+        List<Allmodules> allmodules = Allmodules.findWithQuery(Allmodules.class, "SELECT * FROM Allmodules WHERE login = ?", this.user.getLogin());
+        List<Modules> modules= Modules.findWithQuery(Modules.class, "SELECT * FROM Modules WHERE login = ?", this.user.getLogin());
         if (allmodules.size() == 0) {
             if (modules.size() == 0) {
                 api.setCookie("PHPSESSID", user.getToken());
@@ -143,36 +143,36 @@ public class PProject {
             e.printStackTrace();
         }
         try {
-            Projects project = new Projects(this.user.getToken());
-            project.setScolaryear(ori.getString("scolaryear"));
-            project.setCodemodule(ori.getString("codemodule"));
-            project.setCodeinstance(ori.getString("codeinstance"));
-            project.setCodeacti(ori.getString("codeacti"));
-            project.setInstancelocation(ori.getString("instance_location"));
-            project.setModuletitle(ori.getString("module_title"));
-            project.setIdactivite(ori.getString("id_activite"));
-            project.setProjecttitle(ori.getString("project_title"));
-            project.setTypecode(ori.getString("type_title"));
-            project.setTypecode(ori.getString("type_code"));
-            project.setRegister(ori.getString("register"));
-            project.setNbmin(ori.getString("nb_min"));
-            project.setNbmax(ori.getString("nb_max"));
-            project.setBegin(ori.getString("begin"));
-            project.setEnd(ori.getString("end"));
-            project.setEndregister(ori.getString("end_register"));
-            project.setDeadline(ori.getString("deadline"));
-            project.setTitle(ori.getString("title"));
-            project.setDescription(ori.getString("description"));
-            project.setClosed(ori.getString("closed"));
-            project.setInstanceregistered(ori.getString("instance_registered"));
-            project.setUserprojectstatus(ori.getString("user_project_status"));
+            Projects project = new Projects(this.user.getLogin());
+            project.setScolaryear(ori != null ? ori.getString("scolaryear") : null);
+            project.setCodemodule(ori != null ? ori.getString("codemodule") : null);
+            project.setCodeinstance(ori != null ? ori.getString("codeinstance") : null);
+            project.setCodeacti(ori != null ? ori.getString("codeacti") : null);
+            project.setInstancelocation(ori != null ? ori.getString("instance_location") : null);
+            project.setModuletitle(ori != null ? ori.getString("module_title") : null);
+            project.setIdactivite(ori != null ? ori.getString("id_activite") : null);
+            project.setProjecttitle(ori != null ? ori.getString("project_title") : null);
+            project.setTypecode(ori != null ? ori.getString("type_title") : null);
+            project.setTypecode(ori != null ? ori.getString("type_code") : null);
+            project.setRegister(ori != null ? ori.getString("register") : null);
+            project.setNbmin(ori != null ? ori.getString("nb_min") : null);
+            project.setNbmax(ori != null ? ori.getString("nb_max") : null);
+            project.setBegin(ori != null ? ori.getString("begin") : null);
+            project.setEnd(ori != null ? ori.getString("end") : null);
+            project.setEndregister(ori != null ? ori.getString("end_register") : null);
+            project.setDeadline(ori != null ? ori.getString("deadline") : null);
+            project.setTitle(ori != null ? ori.getString("title") : null);
+            project.setDescription(ori != null ? ori.getString("description") : null);
+            project.setClosed(ori != null ? ori.getString("closed") : null);
+            project.setInstanceregistered(ori != null ? ori.getString("instance_registered") : null);
+            project.setUserprojectstatus(ori != null ? ori.getString("user_project_status") : null);
             project.setFileurl("");
-            if (!Objects.equals(ori.getString("type_code"), "rdv") && URLUtil.isValidUrl("https://intra.epitech.eu/module/" + ori.getString("scolaryear") + "/" + ori.getString("codemodule") + "/" + ori.getString("codeinstance") + "/" + ori.getString("codeacti"))) {
+            if (!Objects.equals(ori != null ? ori.getString("type_code") : null, "rdv") && URLUtil.isValidUrl("https://intra.epitech.eu/module/" + (ori != null ? ori.getString("scolaryear") : null) + "/" + (ori != null ? ori.getString("codemodule") : null) + "/" + (ori != null ? ori.getString("codeinstance") : null) + "/" + (ori != null ? ori.getString("codeacti") : null))) {
                 intra.setCookie("PHPSESSID", user.getToken());
                 String path = "https://www.intra.epitech.eu";
                 String in = null;
                 try {
-                    in = intra.getprojectfile(ori.getString("scolaryear"), ori.getString("codemodule"), ori.getString("codeinstance"), ori.getString("codeacti"));
+                    in = intra.getprojectfile(ori != null ? ori.getString("scolaryear") : null, ori != null ? ori.getString("codemodule") : null, ori != null ? ori.getString("codeinstance") : null, ori != null ? ori.getString("codeacti") : null);
                 } catch (HttpClientErrorException e) {
                     Log.d("Response", e.getResponseBodyAsString());
                 }

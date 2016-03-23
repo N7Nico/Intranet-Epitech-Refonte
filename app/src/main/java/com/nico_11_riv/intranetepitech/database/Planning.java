@@ -4,7 +4,7 @@ import com.orm.SugarRecord;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 
 public class Planning extends SugarRecord {
-    private String token;
+    private String login;
     private String scolaryear;
     private String codemodule;
     private String codeinstance;
@@ -22,20 +22,18 @@ public class Planning extends SugarRecord {
     private String typecode;
 
     public Planning() {
-        GUser gUser = new GUser();
-        this.token = gUser.getToken();
     }
 
-    public Planning(String token) {
-        this.token = token;
+    public Planning(String login) {
+        this.login = login;
     }
 
-    public String getToken() {
-        return token;
+    public String getLogin() {
+        return login;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getScolaryear() {

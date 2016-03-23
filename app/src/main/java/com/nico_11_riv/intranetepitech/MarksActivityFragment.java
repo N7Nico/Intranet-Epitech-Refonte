@@ -50,17 +50,16 @@ public class MarksActivityFragment extends Fragment {
 
     @Bean
     APIErrorHandler ErrorHandler;
+
     @ViewById
     RecyclerView rv;
+
     @ViewById
     ProgressBar marks_progress;
-    private ArrayList<MarkContent> items;
-    private List<Marks> marks;
+
     private GUser gUser = new GUser();
     private GUserInfos user_info = new GUserInfos();
     private RVMarksAdapter adapter;
-    private TextView tv;
-    private ImageView iv;
     private static int def_nb = 8;
     private static int def_semester = 11;
 
@@ -77,17 +76,19 @@ public class MarksActivityFragment extends Fragment {
 
     @UiThread
     void filluserinfosui() {
-        tv = (TextView) getActivity().findViewById(R.id.menu_login);
+        TextView tv = (TextView) getActivity().findViewById(R.id.menu_login);
         tv.setText(user_info.getLogin());
         tv = (TextView)getActivity().findViewById(R.id.menu_email);
         tv.setText(user_info.getEmail());
-        iv = (ImageView) getActivity().findViewById(R.id.menu_img);
+
+        ImageView iv = (ImageView) getActivity().findViewById(R.id.menu_img);
         Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
     }
 
     void fillmarksui() {
-        marks = Select.from(Marks.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<>();
+        ArrayList<MarkContent> items = new ArrayList<>();
+        List<Marks> marks = Select.from(Marks.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+
         for (int i = marks.size() - 1; i > 0; i--) {
             Marks info = marks.get(i);
             items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
@@ -112,10 +113,10 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
+        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
-        Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
+        Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
             PUserInfos infos = new PUserInfos();

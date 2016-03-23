@@ -7,7 +7,7 @@ import com.orm.SugarRecord;
  * Created by Jimmy on 02/03/2016.
  */
 public class Projects extends SugarRecord {
-    private String token;
+    private String login;
     private String scolaryear;
     private String codemodule;
     private String codeinstance;
@@ -33,20 +33,18 @@ public class Projects extends SugarRecord {
     private String fileurl;
 
     public Projects() {
-        GUser user = new GUser();
-        this.token = user.getToken();
     }
 
-    public  Projects(String token) {
-        this.token = token;
+    public  Projects(String login) {
+        this.login = login;
     }
 
-    public String getToken() {
-        return token;
+    public String getLogin() {
+        return login;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getScolaryear() {

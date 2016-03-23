@@ -61,9 +61,9 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
     public void filter(int position, String semester) {
         List<Marks> new_marks;
         if (!Objects.equals(semester, "All"))
-            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND titlemodule LIKE ?", gUser.getToken(), semester);
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), semester);
         else
-            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ?", gUser.getToken());
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ?", gUser.getLogin());
         marks.clear();
         for (int i = new_marks.size() - 1; i > 0; i--) {
             if (i == new_marks.size() - position - 1 && position != 0)
@@ -76,13 +76,13 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
 
     public void search(String text) {
         List<Marks> new_marks;
-        new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND finalnote LIKE ?", gUser.getToken(), "%" + text + "%");
+        new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND finalnote LIKE ?", gUser.getLogin(), "%" + text + "%");
         if (new_marks.size() == 0) {
-            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND title LIKE ?", gUser.getToken(), "%" + text + "%");
+            new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND title LIKE ?", gUser.getLogin(), "%" + text + "%");
             if (new_marks.size() == 0) {
-                new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND correcteur LIKE ?", gUser.getToken(), "%" + text + "%");
+                new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND correcteur LIKE ?", gUser.getLogin(), "%" + text + "%");
                 if (new_marks.size() == 0) {
-                    new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND titlemodule LIKE ?", gUser.getToken(), "%" + text + "%");
+                    new_marks = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), "%" + text + "%");
                 }
             }
         }

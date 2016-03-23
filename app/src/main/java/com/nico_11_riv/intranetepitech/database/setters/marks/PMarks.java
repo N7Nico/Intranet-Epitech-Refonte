@@ -19,7 +19,7 @@ public class PMarks {
             JSONObject json = new JSONObject(api);
             if (json.has("notes")) {
                 JSONArray marks = json.getJSONArray("notes");
-                List<Marks> m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ?", user.getToken());
+                List<Marks> m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ?", user.getLogin());
                 for (int n = 0; n < m.size(); n++) {
                     Marks mark = m.get(n);
                     mark.setOld(true);
@@ -28,11 +28,11 @@ public class PMarks {
                 for (int i = 0; i < marks.length(); ++i) {
                     JSONObject tmp = marks.getJSONObject(i);
                     Marks note;
-                    m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ? AND codeacti = ?", user.getToken(), tmp.getString("codeacti"));
+                    m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND codeacti = ?", user.getLogin(), tmp.getString("codeacti"));
                     if (m.size() > 0)
                         note = m.get(0);
                     else
-                        note = new Marks(user.getToken());
+                        note = new Marks(user.getLogin());
                     note.setOld(false);
                     note.setScolyear(tmp.getString("scolaryear"));
                     note.setCodemodule(tmp.getString("codemodule"));
@@ -46,7 +46,7 @@ public class PMarks {
                     note.setComment(tmp.getString("comment"));
                     note.save();
                 }
-                m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE token = ?", user.getToken());
+                m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ?", user.getLogin());
                 for (int n = 0; n < m.size(); n++) {
                     Marks mark = m.get(n);
                     if (mark.isOld())

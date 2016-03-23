@@ -37,12 +37,12 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
     }
 
     public void background() {
-        List<Messages> new_messages = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE token = ?", gUser.getToken());
+        List<Messages> new_messages = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE login = ?", gUser.getLogin());
 
         messages.clear();
         for (int i = 0; i < new_messages.size(); i++) {
             Messages info = new_messages.get(i);
-            messages.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
+            messages.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogincorrector(), Html.fromHtml(info.getContent()).toString()));
         }
         notifyDataSetChanged();
     }

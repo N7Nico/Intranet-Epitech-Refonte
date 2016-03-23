@@ -14,13 +14,13 @@ import java.util.List;
  */
 public class PAllModules {
     public PAllModules(String api) {
-        GUser u = new GUser();
+        GUser user = new GUser();
         try {
             JSONArray arr = new JSONArray(api);
             for (int i = 0; i< arr.length(); i++) {
                 JSONObject tmp = arr.getJSONObject(i);
                 Allmodules allmodules = new Allmodules();
-                allmodules.setToken(u.getToken());
+                allmodules.setLogin(user.getLogin());
                 allmodules.setSemester(tmp.getString("semester"));
                 allmodules.setBegin(tmp.getString("begin"));
                 allmodules.setEnd(tmp.getString("end"));

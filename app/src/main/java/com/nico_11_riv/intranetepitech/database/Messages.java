@@ -6,32 +6,29 @@ import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 public class Messages extends SugarRecord {
-    private String token;
+    private String login;
     private boolean old;
     private String idmessage;
     private String title;
     private String content;
     private String date;
-    private String login;
     private String picture;
+    private String logincorrector;
 
     public Messages () {
-        GUser user = new GUser();
-        this.token = user.getToken();
+    }
+
+    public Messages(String login) {
+        this.login = login;
         this.old = false;
     }
 
-    public Messages(String token) {
-        this.token = token;
-        this.old = false;
+    public String getLogin() {
+        return login;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public boolean isOld() {
@@ -74,19 +71,19 @@ public class Messages extends SugarRecord {
         this.date = date;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
     public String getPicture() {
         return picture;
     }
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public String getLogincorrector() {
+        return logincorrector;
+    }
+
+    public void setLogincorrector(String logincorrector) {
+        this.logincorrector = logincorrector;
     }
 }

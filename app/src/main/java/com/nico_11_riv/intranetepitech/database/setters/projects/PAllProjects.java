@@ -12,12 +12,12 @@ import org.json.JSONObject;
  */
 public class PAllProjects {
     public PAllProjects(String api) {
-        GUser u = new GUser();
+        GUser user = new GUser();
         try {
             JSONArray jsonArray = new JSONArray(api);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject tmp = jsonArray.getJSONObject(i);
-                Allprojects allprojects = new Allprojects(u.getToken());
+                Allprojects allprojects = new Allprojects(user.getLogin());
                 allprojects.setCodemodule(tmp.getString("codemodule"));
                 allprojects.setProject(tmp.getString("project"));
                 allprojects.setEndacti(tmp.getString("end_acti"));

@@ -4,7 +4,6 @@ import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 public class Userinfos extends SugarRecord {
-    private String token;
     private String login;
     private String title;
     private String lastname;
@@ -21,20 +20,10 @@ public class Userinfos extends SugarRecord {
     private String gpa;
 
     public Userinfos() {
-        GUser u = new GUser();
-        this.token = u.getToken();
     }
 
-    public Userinfos(String token) {
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public Userinfos(String login) {
+        this.login = login;
     }
 
     public String getLogin() {

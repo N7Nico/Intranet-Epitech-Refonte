@@ -5,7 +5,6 @@ import com.nico_11_riv.intranetepitech.database.Userinfos;
 import java.util.List;
 
 public class GUserInfos {
-    private String token;
     private String login;
     private String title;
     private String lastname;
@@ -22,10 +21,9 @@ public class GUserInfos {
 
     public GUserInfos() {
         GUser gUser = new GUser();
-        if (gUser.getToken() != null) {
-            List<Userinfos> infos = Userinfos.find(Userinfos.class, "token = ?", gUser.getToken());
+        if (gUser.getLogin() != null) {
+            List<Userinfos> infos = Userinfos.find(Userinfos.class, "login = ?", gUser.getLogin());
             Userinfos info = infos.get(0);
-            this.token = info.getToken();
             this.login = info.getLogin();
             this.title = info.getTitle();
             this.lastname = info.getLastname();
@@ -40,10 +38,6 @@ public class GUserInfos {
             this.credits = info.getCredits();
             this.gpa = info.getGpa();
         }
-    }
-
-    public String getToken() {
-        return token;
     }
 
     public String getLogin() {

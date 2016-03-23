@@ -7,7 +7,7 @@ import com.orm.SugarRecord;
  * Created by Jimmy on 10/02/2016.
  */
 public class Allprojects extends SugarRecord {
-    private String token;
+    private String login;
     private String codemodule;
     private String project;
     private String endacti;
@@ -21,20 +21,18 @@ public class Allprojects extends SugarRecord {
     private String typeacty;
 
     public Allprojects() {
-        GUser u = new GUser();
-        token = u.getToken();
     }
 
-    public Allprojects(String token) {
-        this.token = token;
+    public Allprojects(String login) {
+        this.login = login;
     }
 
-    public String getToken() {
-        return token;
+    public String getLogin() {
+        return login;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getCodemodule() {

@@ -11,15 +11,15 @@ public class PUserInfos {
 
     public void init(String api) {
         try {
-            GUser u = new GUser();
+            GUser user = new GUser();
             JSONObject json = new JSONObject(api);
             if (json.has("login")) {
-                Userinfos userinfos = new Userinfos(u.getToken());
+                Userinfos userinfos = new Userinfos(user.getLogin());
                 userinfos.setLogin(json.getString("login"));
                 userinfos.setTitle(json.getString("title"));
                 userinfos.setLastname(json.getString("lastname"));
                 userinfos.setFirstname(json.getString("firstname"));
-                userinfos.setEmail(u.getLogin() + "@epitech.eu");
+                userinfos.setEmail(user.getLogin() + "@epitech.eu");
                 userinfos.setScolaryear(json.getString("scolaryear"));
                 userinfos.setPicture(json.getString("picture"));
                 userinfos.setPromo(json.getString("promo"));

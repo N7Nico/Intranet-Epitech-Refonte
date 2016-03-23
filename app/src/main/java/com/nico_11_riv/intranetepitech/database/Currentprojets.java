@@ -3,7 +3,7 @@ package com.nico_11_riv.intranetepitech.database;
 import com.orm.SugarRecord;
 
 public class Currentprojets extends SugarRecord {
-    private String token;
+    private String login;
     private String title;
     private String titlelink;
     private String timelinestart;
@@ -15,19 +15,18 @@ public class Currentprojets extends SugarRecord {
     private String titlemodule;
 
     public Currentprojets() {
-
     }
 
-    public Currentprojets(String token) {
-        this.token = token;
+    public Currentprojets(String login) {
+        this.login = login;
     }
 
-    public String getToken() {
-        return token;
+    public String getLogin() {
+        return login;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getTitle() {

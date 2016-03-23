@@ -18,8 +18,7 @@ public class PModules {
             JSONArray json = obj.getJSONArray("modules");
             for (int i = 0; i < json.length(); i++) {
                 JSONObject tmp = json.getJSONObject(i);
-
-                Modules modules = new Modules(user.getToken());
+                Modules modules = new Modules(user.getLogin());
                 modules.setScolaryear(tmp.getString("scolaryear"));
                 modules.setCodemodule(tmp.getString("codemodule"));
                 modules.setCodeinstance(tmp.getString("codeinstance"));

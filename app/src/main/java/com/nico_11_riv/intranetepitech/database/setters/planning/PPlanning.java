@@ -20,7 +20,7 @@ public class PPlanning {
             for (int i = 0; i < planning.length(); ++i) {
                 JSONObject tmp = planning.getJSONObject(i);
                 if (tmp.has("scolaryear")) {
-                    Planning pl = new Planning(user.getToken());
+                    Planning pl = new Planning(user.getLogin());
                     pl.setScolaryear(tmp.getString("scolaryear"));
                     pl.setCodemodule(tmp.getString("codemodule"));
                     pl.setCodeinstance(tmp.getString("codeinstance"));

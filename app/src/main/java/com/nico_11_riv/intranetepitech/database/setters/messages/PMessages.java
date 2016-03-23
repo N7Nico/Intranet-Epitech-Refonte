@@ -17,7 +17,7 @@ public class PMessages {
         GUser user = new GUser();
         try {
             JSONArray messages = new JSONArray(api);
-            List<Messages> m = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE token = ?", user.getToken());
+            List<Messages> m = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE login = ?", user.getLogin());
             for (int n = 0; n < m.size(); n++) {
                 Messages message = m.get(n);
                 message.setOld(true);
@@ -26,21 +26,21 @@ public class PMessages {
             for (int i = 0; i < messages.length(); ++i) {
                 JSONObject tmp = messages.getJSONObject(i);
                 Messages msg;
-                m = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE token = ? AND idmessage = ?", user.getToken(), tmp.getString("id"));
+                m = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE login = ? AND idmessage = ?", user.getLogin(), tmp.getString("id"));
                 if (m.size() > 0)
                     msg = m.get(0);
                 else
-                    msg = new Messages(user.getToken());
+                    msg = new Messages(user.getLogin());
                 msg.setOld(false);
                 msg.setIdmessage(tmp.getString("id"));
                 msg.setTitle(tmp.getString("title"));
                 msg.setContent(tmp.getString("content"));
                 msg.setDate(tmp.getString("date"));
-                msg.setLogin(tmp.getJSONObject("user").getString("title"));
+                msg.setLogincorrector(tmp.getJSONObject("user").getString("title"));
                 msg.setPicture(tmp.getJSONObject("user").getString("picture"));
                 msg.save();
             }
-            m = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE token = ?", user.getToken());
+            m = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE login = ?", user.getLogin());
             for (int n = 0; n < m.size(); n++) {
                 Messages message = m.get(n);
                 if (message.isOld())

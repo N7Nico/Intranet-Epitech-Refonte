@@ -79,7 +79,6 @@ public class ProfileActivityFragment extends Fragment {
     @ViewById
     ProgressBar messages_progress;
 
-    private ArrayList<MessageContent> items;
     private GUser gUser = new GUser();
     private GUserInfos user_info;
     private RVMessagesAdapter adapter;
@@ -114,8 +113,9 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void fillmessagesui() {
-        List<Messages> messages = Select.from(Messages.class).where(Condition.prop("token").eq(gUser.getToken())).list();
-        items = new ArrayList<>();
+        List<Messages> messages = Select.from(Messages.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+        ArrayList<MessageContent> items = new ArrayList<>();
+
         for (int i = 0; i < messages.size(); i++) {
             Messages info = messages.get(i);
             items.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
@@ -130,12 +130,12 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE token = ?", gUser.getToken());
+        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
         if (uInfos.size() > 0) {
             user_info = new GUserInfos();
             filluserinfosui();
         }
-       Userinfos.deleteAll(Userinfos.class, "token = ?", gUser.getToken());
+       Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
             PUserInfos infos = new PUserInfos();
