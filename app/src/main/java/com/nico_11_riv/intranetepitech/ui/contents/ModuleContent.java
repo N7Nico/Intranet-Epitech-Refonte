@@ -1,16 +1,16 @@
 package com.nico_11_riv.intranetepitech.ui.contents;
 
-public class ModulesContent {
+public class ModuleContent {
     private String grade;
     private String modulename;
-    private String timeline;
+    private String date;
     private String codeModule;
 
-    public ModulesContent(String grade, String modulename, String timeline, String codeModule) {
+    public ModuleContent(String grade, String modulename, String date, String codeModule) {
         super();
         this.grade = grade;
         this.modulename = modulename;
-        this.timeline = timeline;
+        this.date = date;
         this.codeModule = codeModule;
     }
 
@@ -30,12 +30,12 @@ public class ModulesContent {
         this.modulename = modulename;
     }
 
-    public String getTimeline() {
-        return timeline;
+    public String getDate() {
+        return date;
     }
 
-    public void setTimeline(String timeline) {
-        this.timeline = timeline;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getCodeModule() {

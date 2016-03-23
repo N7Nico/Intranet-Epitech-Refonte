@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PMarks {
     public PMarks() {
@@ -28,22 +29,22 @@ public class PMarks {
                 for (int i = 0; i < marks.length(); ++i) {
                     JSONObject tmp = marks.getJSONObject(i);
                     Marks note;
-                    m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND codeacti = ?", user.getLogin(), tmp.getString("codeacti"));
+                    m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND codeacti = ?", user.getLogin(), !Objects.equals(tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a");
                     if (m.size() > 0)
                         note = m.get(0);
                     else
                         note = new Marks(user.getLogin());
                     note.setOld(false);
-                    note.setScolyear(tmp.getString("scolaryear"));
-                    note.setCodemodule(tmp.getString("codemodule"));
-                    note.setTitlemodule(tmp.getString("titlemodule"));
-                    note.setCodeinstance(tmp.getString("codeinstance"));
-                    note.setCodeacti(tmp.getString("codeacti"));
-                    note.setTitle(tmp.getString("title"));
-                    note.setDate(tmp.getString("date"));
-                    note.setCorrecteur(tmp.getString("correcteur"));
-                    note.setFinalnote(tmp.getString("final_note"));
-                    note.setComment(tmp.getString("comment"));
+                    note.setScolyear(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a");
+                    note.setCodemodule(!Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
+                    note.setTitlemodule(!Objects.equals(tmp.getString("titlemodule"), "null") ? tmp.getString("titlemodule") : "n/a");
+                    note.setCodeinstance(!Objects.equals(tmp.getString("codeinstance"), "null") ? tmp.getString("codeinstance") : "n/a");
+                    note.setCodeacti(!Objects.equals(tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a");
+                    note.setTitle(!Objects.equals(tmp.getString("title"), "null") ? tmp.getString("title") : "n/a");
+                    note.setDate(!Objects.equals(tmp.getString("date"), "null") ? tmp.getString("date") : "n/a");
+                    note.setCorrecteur(!Objects.equals(tmp.getString("correcteur"), "null") ? tmp.getString("correcteur") : "n/a");
+                    note.setFinalnote(!Objects.equals(tmp.getString("final_note"), "null") ? tmp.getString("final_note") : "n/a");
+                    note.setComment(!Objects.equals(tmp.getString("comment"), "null") ? tmp.getString("comment") : "Aucun commentaire.");
                     note.save();
                 }
                 m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ?", user.getLogin());

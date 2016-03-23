@@ -12,15 +12,21 @@ import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
+import com.nico_11_riv.intranetepitech.database.Allmodules;
 import com.nico_11_riv.intranetepitech.database.Marks;
+import com.nico_11_riv.intranetepitech.database.Modules;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
-import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
+import com.nico_11_riv.intranetepitech.database.setters.marks.PMarks;
+import com.nico_11_riv.intranetepitech.database.setters.modules.PAllModules;
+import com.nico_11_riv.intranetepitech.database.setters.modules.PModules;
+import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
 import com.nico_11_riv.intranetepitech.database.setters.user.PUserInfos;
-import com.nico_11_riv.intranetepitech.database.setters.marks.PMarks;
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
+import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
 import com.nico_11_riv.intranetepitech.ui.adapters.RVMarksAdapter;
+import com.nico_11_riv.intranetepitech.ui.adapters.RVModulesAdapter;
 import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
+import com.nico_11_riv.intranetepitech.ui.contents.ModuleContent;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.squareup.picasso.Picasso;
@@ -43,7 +49,10 @@ import java.util.List;
  */
 
 @EFragment(R.layout.fragment_marksandmodules)
-public class MarksActivityFragment extends Fragment {
+public class ModulesActivityFragment extends Fragment {
+
+    private static int def_nb = 8;
+    private static int def_semester = 11;
 
     @RestService
     IntrAPI api;
@@ -59,9 +68,7 @@ public class MarksActivityFragment extends Fragment {
 
     private GUser gUser = new GUser();
     private GUserInfos user_info = new GUserInfos();
-    private RVMarksAdapter adapter;
-    private static int def_nb = 8;
-    private static int def_semester = 11;
+    private RVModulesAdapter adapter;
 
     @AfterInject
     void afterInject() {
@@ -69,8 +76,8 @@ public class MarksActivityFragment extends Fragment {
     }
 
     @UiThread
-    void setadpt(ArrayList<MarkContent> items) {
-        adapter = new RVMarksAdapter(items, getContext());
+    void setadpt(ArrayList<ModuleContent> items) {
+        adapter = new RVModulesAdapter(items, getContext());
         rv.setAdapter(adapter);
     }
 
@@ -78,26 +85,26 @@ public class MarksActivityFragment extends Fragment {
     void filluserinfosui() {
         TextView tv = (TextView) getActivity().findViewById(R.id.menu_login);
         tv.setText(user_info.getLogin());
-        tv = (TextView)getActivity().findViewById(R.id.menu_email);
+        tv = (TextView) getActivity().findViewById(R.id.menu_email);
         tv.setText(user_info.getEmail());
 
         ImageView iv = (ImageView) getActivity().findViewById(R.id.menu_img);
         Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
     }
 
-    void fillmarksui() {
-        ArrayList<MarkContent> items = new ArrayList<>();
-        List<Marks> marks = Select.from(Marks.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+    void fillmodulesui() {
+        ArrayList<ModuleContent> items = new ArrayList<>();
+        List<Allmodules> modules = Select.from(Allmodules.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
 
-        for (int i = marks.size() - 1; i > 0; i--) {
-            Marks info = marks.get(i);
-            items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+        for (int i = 0; i < modules.size(); i++) {
+            Allmodules info = modules.get(i);
+            items.add(new ModuleContent(info.getGrade(), info.getTitle(), info.getBegin() + " -> " + info.getEnd(), info.getCode()));
         }
         setadpt(items);
     }
 
     @UiThread
-    void fillnewmarksui() {
+    void fillnewmodulesui() {
         marksormodules_progress.setVisibility(View.GONE);
         if (def_nb != 8) {
             if (def_semester != 11)
@@ -113,7 +120,7 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
+        List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
         Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
@@ -132,8 +139,8 @@ public class MarksActivityFragment extends Fragment {
         filluserinfosui();
     }
 
-    void setMarks() {
-        fillmarksui();
+    void setModules() {
+        fillmodulesui();
         String m = null;
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
@@ -145,8 +152,8 @@ public class MarksActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        PMarks marks = new PMarks();
-        marks.init(m);
+        PModules modules = new PModules();
+        modules.init(m);
         api.setCookie("PHPSESSID", gUser.getToken());
         try {
             api.getuserinfo(gUser.getLogin());
@@ -157,20 +164,31 @@ public class MarksActivityFragment extends Fragment {
             Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        fillnewmarksui();
+        api.setCookie("PHPSESSID", gUser.getToken());
+        try {
+            PAllModules mod = new PAllModules();
+            mod.init(api.getallmodules());
+        } catch (HttpClientErrorException e) {
+            Log.d("Response", e.getResponseBodyAsString());
+            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+        }  catch (NullPointerException e) {
+            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        fillnewmodulesui();
     }
 
     @Background
-    void profile_marks() {
+    void profile_modules() {
         setUserInfos();
-        setMarks();
+        setModules();
     }
 
     @AfterViews
     void init() {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        profile_marks();
+        profile_modules();
     }
 
     public void filter(int size, String semester, int def_nb_act, int def_semester_act) {
@@ -178,8 +196,7 @@ public class MarksActivityFragment extends Fragment {
             def_nb = def_nb_act;
             def_semester = def_semester_act;
             adapter.filter(size, semester);
-        }
-        else
+        } else
             Toast.makeText(getContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }
 

@@ -8,7 +8,9 @@ import org.androidannotations.api.rest.RestErrorHandler;
 import org.springframework.core.NestedRuntimeException;
 
 /**
+ *
  * Created by nicol on 13/03/2016.
+ *
  */
 
 @EBean

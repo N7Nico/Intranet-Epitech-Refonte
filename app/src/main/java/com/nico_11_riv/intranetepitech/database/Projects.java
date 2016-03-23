@@ -1,6 +1,5 @@
 package com.nico_11_riv.intranetepitech.database;
 
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 /**
@@ -35,7 +34,7 @@ public class Projects extends SugarRecord {
     public Projects() {
     }
 
-    public  Projects(String login) {
+    public Projects(String login) {
         this.login = login;
     }
 

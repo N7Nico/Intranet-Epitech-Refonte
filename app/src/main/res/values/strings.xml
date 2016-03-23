@@ -2,6 +2,7 @@
     <string name="app_name">Intranet Epitech</string>
     <string name="title_profile">Profil</string>
     <string name="title_marks">Notes</string>
+    <string name="title_modules">Modules</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -43,7 +44,7 @@
     <string name="action_nb">NB</string>
     <string name="action_semester">Semestre</string>
 
-    <string name="number">Nombre de notes à afficher</string>
+    <string name="numberofmarks">Nombre de notes à afficher</string>
     <string-array name="number_array">
         <item>5</item>
         <item>10</item>
@@ -71,5 +72,12 @@
         <item>Semestre 10</item>
         <item>Tous</item>
     </string-array>
+
+    <!-- Values of modules RecyclerView-->
+    <string name="grade_img_desc">Grade Background</string>
+    <string name="grade">A</string>
+    <string name="codemodule">G-EPI-42</string>
+
+    <string name="numberofmodules">Nombre de modules à afficher</string>
 
 </resources>

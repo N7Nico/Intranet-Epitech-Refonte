@@ -28,8 +28,8 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
     private List<MarkContent> marks;
     private Context context;
 
-    public RVMarksAdapter(List<MarkContent> persons, Context context) {
-        this.marks = persons;
+    public RVMarksAdapter(List<MarkContent> marks, Context context) {
+        this.marks = marks;
         this.context = context;
     }
 
@@ -165,22 +165,6 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
 
             List<Marks> marks = Marks.findWithQuery(Marks.class, "Select * FROM Marks WHERE finalnote = ? AND correcteur = ? AND title = ? AND titlemodule = ?", mark.getText().toString(), corrector.getText().toString(), project.getText().toString(), module.getText().toString());
             Marks mark = marks.get(0);
-            if (mark.getTitle() == null) {
-                mark.setTitle("n/a");
-                mark.save();
-            } else if (mark.getFinalnote() == null) {
-                mark.setFinalnote("n/a");
-                mark.save();
-            } else if (mark.getCorrecteur() == null) {
-                mark.setCorrecteur("n/a");
-                mark.save();
-            } else if (mark.getTitlemodule() == null) {
-                mark.setTitlemodule("n/a");
-                mark.save();
-            } else if (mark.getComment() == null) {
-                mark.setComment("Aucun commentaire.");
-                mark.save();
-            }
             new MaterialDialog.Builder(context)
                     .title(mark.getTitle())
                     .content(Html.fromHtml("<b>Note :</b> " + mark.getFinalnote() + "<br /><b>Correcteur :</b> " + mark.getCorrecteur() + "<br /><b>Module :</b> " + mark.getTitlemodule() + "<br /><br />" + escape(mark.getComment())))

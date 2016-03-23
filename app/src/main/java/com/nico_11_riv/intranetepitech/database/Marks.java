@@ -1,6 +1,5 @@
 package com.nico_11_riv.intranetepitech.database;
 
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 public class Marks extends SugarRecord {
@@ -17,10 +16,10 @@ public class Marks extends SugarRecord {
     private String finalnote;
     private String comment;
 
-    public Marks () {
+    public Marks() {
     }
 
-    public Marks (String login) {
+    public Marks(String login) {
         this.login = login;
         this.old = false;
     }

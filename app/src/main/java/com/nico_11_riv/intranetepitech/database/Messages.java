@@ -1,8 +1,5 @@
 package com.nico_11_riv.intranetepitech.database;
 
-import android.text.Html;
-
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 public class Messages extends SugarRecord {
@@ -15,7 +12,7 @@ public class Messages extends SugarRecord {
     private String picture;
     private String logincorrector;
 
-    public Messages () {
+    public Messages() {
     }
 
     public Messages(String login) {

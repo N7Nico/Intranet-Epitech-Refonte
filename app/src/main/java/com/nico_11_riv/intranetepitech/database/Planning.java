@@ -1,7 +1,6 @@
 package com.nico_11_riv.intranetepitech.database;
 
 import com.orm.SugarRecord;
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 
 public class Planning extends SugarRecord {
     private String login;

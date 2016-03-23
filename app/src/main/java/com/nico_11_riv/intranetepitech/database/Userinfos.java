@@ -1,6 +1,5 @@
 package com.nico_11_riv.intranetepitech.database;
 
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 public class Userinfos extends SugarRecord {

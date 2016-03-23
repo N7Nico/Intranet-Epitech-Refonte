@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ *
  * Created by Jimmy on 02/03/2016.
+ *
  */
 
 public class PProject {
@@ -136,49 +138,44 @@ public class PProject {
 
 
     public void getProject(String api, IntrAPI intra) {
-        JSONObject ori = null;
         try {
-            ori = new JSONObject(api);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
+            JSONObject tmp = new JSONObject(api);
             Projects project = new Projects(this.user.getLogin());
-            project.setScolaryear(ori != null ? ori.getString("scolaryear") : null);
-            project.setCodemodule(ori != null ? ori.getString("codemodule") : null);
-            project.setCodeinstance(ori != null ? ori.getString("codeinstance") : null);
-            project.setCodeacti(ori != null ? ori.getString("codeacti") : null);
-            project.setInstancelocation(ori != null ? ori.getString("instance_location") : null);
-            project.setModuletitle(ori != null ? ori.getString("module_title") : null);
-            project.setIdactivite(ori != null ? ori.getString("id_activite") : null);
-            project.setProjecttitle(ori != null ? ori.getString("project_title") : null);
-            project.setTypecode(ori != null ? ori.getString("type_title") : null);
-            project.setTypecode(ori != null ? ori.getString("type_code") : null);
-            project.setRegister(ori != null ? ori.getString("register") : null);
-            project.setNbmin(ori != null ? ori.getString("nb_min") : null);
-            project.setNbmax(ori != null ? ori.getString("nb_max") : null);
-            project.setBegin(ori != null ? ori.getString("begin") : null);
-            project.setEnd(ori != null ? ori.getString("end") : null);
-            project.setEndregister(ori != null ? ori.getString("end_register") : null);
-            project.setDeadline(ori != null ? ori.getString("deadline") : null);
-            project.setTitle(ori != null ? ori.getString("title") : null);
-            project.setDescription(ori != null ? ori.getString("description") : null);
-            project.setClosed(ori != null ? ori.getString("closed") : null);
-            project.setInstanceregistered(ori != null ? ori.getString("instance_registered") : null);
-            project.setUserprojectstatus(ori != null ? ori.getString("user_project_status") : null);
+            project.setScolaryear(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a");
+            project.setCodemodule(!Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
+            project.setCodeinstance(!Objects.equals(tmp.getString("codeinstance"), "null") ? tmp.getString("codeinstance") : "n/a");
+            project.setCodeacti(!Objects.equals(tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a");
+            project.setInstancelocation(!Objects.equals(tmp.getString("instance_location"), "null") ? tmp.getString("instance_location") : "n/a");
+            project.setModuletitle(!Objects.equals(tmp.getString("module_title"), "null") ? tmp.getString("module_title") : "n/a");
+            project.setIdactivite(!Objects.equals(tmp.getString("id_activite"), "null") ? tmp.getString("id_activite") : "n/a");
+            project.setProjecttitle(!Objects.equals(tmp.getString("project_title"), "null") ? tmp.getString("project_title") : "n/a");
+            project.setTypecode(!Objects.equals(tmp.getString("type_title"), "null") ? tmp.getString("type_title") : "n/a");
+            project.setTypecode(!Objects.equals(tmp.getString("type_code"), "null") ? tmp.getString("type_code") : "n/a");
+            project.setRegister(!Objects.equals(tmp.getString("register"), "null") ? tmp.getString("register") : "n/a");
+            project.setNbmin(!Objects.equals(tmp.getString("nb_min"), "null") ? tmp.getString("nb_min") : "n/a");
+            project.setNbmax(!Objects.equals(tmp.getString("nb_max"), "null") ? tmp.getString("nb_max") : "n/a");
+            project.setBegin(!Objects.equals(tmp.getString("begin"), "null") ? tmp.getString("begin") : "n/a");
+            project.setEnd(!Objects.equals(tmp.getString("end"), "null") ? tmp.getString("end") : "n/a");
+            project.setEndregister(!Objects.equals(tmp.getString("end_register"), "null") ? tmp.getString("end_register") : "n/a");
+            project.setDeadline(!Objects.equals(tmp.getString("deadline"), "null") ? tmp.getString("deadline") : "n/a");
+            project.setTitle(!Objects.equals(tmp.getString("title"), "null") ? tmp.getString("title") : "n/a");
+            project.setDescription(!Objects.equals(tmp.getString("description"), "null") ? tmp.getString("description") : "n/a");
+            project.setClosed(!Objects.equals(tmp.getString("closed"), "null") ? tmp.getString("closed") : "n/a");
+            project.setInstanceregistered(!Objects.equals(tmp.getString("instance_registered"), "null") ? tmp.getString("instance_registered") : "n/a");
+            project.setUserprojectstatus(!Objects.equals(tmp.getString("user_project_status"), "null") ? tmp.getString("user_project_status") : "n/a");
             project.setFileurl("");
-            if (!Objects.equals(ori != null ? ori.getString("type_code") : null, "rdv") && URLUtil.isValidUrl("https://intra.epitech.eu/module/" + (ori != null ? ori.getString("scolaryear") : null) + "/" + (ori != null ? ori.getString("codemodule") : null) + "/" + (ori != null ? ori.getString("codeinstance") : null) + "/" + (ori != null ? ori.getString("codeacti") : null))) {
+            if (!Objects.equals(!Objects.equals(tmp.getString("type_code"), "null") ? tmp.getString("type_code") : "n/a", "rdv") && URLUtil.isValidUrl(!Objects.equals("https://intra.epitech.eu/module/" + tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : !Objects.equals("n/a" + "/" + tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : !Objects.equals("n/a" + "/" + tmp.getString("codeinstance"), "null") ? tmp.getString("codeinstance") : !Objects.equals("n/a" + "/" + tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a")) {
                 intra.setCookie("PHPSESSID", user.getToken());
                 String path = "https://www.intra.epitech.eu";
                 String in = null;
                 try {
-                    in = intra.getprojectfile(ori != null ? ori.getString("scolaryear") : null, ori != null ? ori.getString("codemodule") : null, ori != null ? ori.getString("codeinstance") : null, ori != null ? ori.getString("codeacti") : null);
+                    in = intra.getprojectfile(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a", !Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a", !Objects.equals(tmp.getString("codeinstance"), "n/a") ? tmp.getString("codeinstance") : "n/a", !Objects.equals(tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a");
                 } catch (HttpClientErrorException e) {
                     Log.d("Response", e.getResponseBodyAsString());
                 }
                 try {
                     JSONArray json = new JSONArray(in);
-                    JSONObject tmp = json.getJSONObject(0);
+                    tmp = json.getJSONObject(0);
                     if (tmp.has("fullpath")) {
                         path += tmp.getString("fullpath");
                         project.setFileurl(path);

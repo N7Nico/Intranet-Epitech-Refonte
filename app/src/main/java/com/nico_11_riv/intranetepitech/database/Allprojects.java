@@ -1,10 +1,11 @@
 package com.nico_11_riv.intranetepitech.database;
 
-import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.orm.SugarRecord;
 
 /**
+ *
  * Created by Jimmy on 10/02/2016.
+ *
  */
 public class Allprojects extends SugarRecord {
     private String login;

@@ -27,16 +27,16 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-@EActivity(R.layout.activity_marks)
-public class MarksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+@EActivity(R.layout.activity_modules)
+public class ModulesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static int def_nb = 8;
     private static int def_semester = 11;
     private SearchManager searchManager;
     private SearchView searchView;
 
-    @FragmentById(R.id.fragment_marks)
-    MarksActivityFragment fragment;
+    @FragmentById(R.id.fragment_modules)
+    ModulesActivityFragment fragment;
 
     @ViewById
     Toolbar toolbar;
@@ -135,7 +135,7 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
         switch (item.getItemId()) {
             case R.id.action_nb:
                 new MaterialDialog.Builder(this)
-                        .title(R.string.numberofmarks)
+                        .title(R.string.numberofmodules)
                         .items(R.array.number_array)
                         .itemsCallbackSingleChoice(def_nb, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override

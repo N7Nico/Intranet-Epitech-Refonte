@@ -11,7 +11,9 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 
 /**
+ *
  * Created by nicol on 13/03/2016.
+ *
  */
 
 @Rest(rootUrl = "https://intra.epitech.eu", converters = {StringHttpMessageConverter.class, FormHttpMessageConverter.class})
@@ -30,7 +32,7 @@ public interface IntrAPI extends RestClientErrorHandling {
 
     @Get("/user/{login}/notes?format=json")
     @RequiresCookie("PHPSESSID")
-    String getmarks(String login);
+    String getmarksandmodules(String login);
 
     @Get("/course/filter?format=json")
     @RequiresCookie("PHPSESSID")
