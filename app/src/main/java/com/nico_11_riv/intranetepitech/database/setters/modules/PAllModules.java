@@ -1,7 +1,7 @@
 package com.nico_11_riv.intranetepitech.database.setters.modules;
 
 import com.nico_11_riv.intranetepitech.database.Allmodules;
-import com.nico_11_riv.intranetepitech.database.Modules;
+import com.nico_11_riv.intranetepitech.database.Module;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 
 import org.json.JSONArray;
@@ -40,7 +40,7 @@ public class PAllModules {
                     allmodules = new Allmodules(user.getLogin());
                 allmodules.setOld(false);
                 allmodules.setLogin(user.getLogin());
-                List<Modules> modules = Modules.findWithQuery(Modules.class, "SELECT * FROM Modules WHERE login = ? AND codemodule = ?", user.getLogin(), !Objects.equals(tmp.getString("code"), "null") ? tmp.getString("code") : "n/a");
+                List<Module> modules = Module.findWithQuery(Module.class, "SELECT * FROM Module WHERE login = ? AND codemodule = ?", user.getLogin(), !Objects.equals(tmp.getString("code"), "null") ? tmp.getString("code") : "n/a");
                 if (modules.size() > 0)
                     allmodules.setGrade(modules.get(0).getGrade());
                 else

@@ -36,7 +36,7 @@
                     android:textSize="12sp"
                     android:textColor="#fff"
                     android:text="@string/grade"
-                    android:elevation="6dp"
+                    android:elevation="10dp"
                     android:textStyle="bold" />
             </FrameLayout>
 

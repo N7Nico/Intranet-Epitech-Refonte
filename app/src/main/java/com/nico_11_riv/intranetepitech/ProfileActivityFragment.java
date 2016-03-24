@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
-import com.nico_11_riv.intranetepitech.database.Messages;
+import com.nico_11_riv.intranetepitech.database.Message;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
@@ -113,11 +113,11 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void fillmessagesui() {
-        List<Messages> messages = Select.from(Messages.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+        List<Message> messages = Select.from(Message.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
         ArrayList<MessageContent> items = new ArrayList<>();
 
         for (int i = 0; i < messages.size(); i++) {
-            Messages info = messages.get(i);
+            Message info = messages.get(i);
             items.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogin(), Html.fromHtml(info.getContent()).toString()));
         }
         setadpt(items);

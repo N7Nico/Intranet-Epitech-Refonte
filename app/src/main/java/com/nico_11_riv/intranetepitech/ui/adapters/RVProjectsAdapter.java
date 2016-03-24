@@ -22,13 +22,13 @@ import java.util.Objects;
  * Created by nicol on 13/03/2016.
  */
 
-public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHolder> {
+public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.ViewHolder> {
 
     private GUser gUser = new GUser();
     private List<MarkContent> marks;
     private Context context;
 
-    public RVMarksAdapter(List<MarkContent> marks, Context context) {
+    public RVProjectsAdapter(List<MarkContent> marks, Context context) {
         this.marks = marks;
         this.context = context;
     }

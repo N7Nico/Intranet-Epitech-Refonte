@@ -2,7 +2,7 @@ package com.nico_11_riv.intranetepitech.database;
 
 import com.orm.SugarRecord;
 
-public class Messages extends SugarRecord {
+public class Message extends SugarRecord {
     private String login;
     private boolean old;
     private String idmessage;
@@ -12,10 +12,10 @@ public class Messages extends SugarRecord {
     private String picture;
     private String logincorrector;
 
-    public Messages() {
+    public Message() {
     }
 
-    public Messages(String login) {
+    public Message(String login) {
         this.login = login;
         this.old = false;
     }

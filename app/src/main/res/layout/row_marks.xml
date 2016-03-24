@@ -36,7 +36,7 @@
                     android:textSize="15sp"
                     android:textColor="#fff"
                     android:text="@string/mark"
-                    android:elevation="6dp"
+                    android:elevation="10dp"
                     android:textStyle="bold" />
             </FrameLayout>
 

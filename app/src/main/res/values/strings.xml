@@ -3,6 +3,7 @@
     <string name="title_profile">Profil</string>
     <string name="title_marks">Notes</string>
     <string name="title_modules">Modules</string>
+    <string name="title_projects">Projects</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -41,7 +42,7 @@
     <string name="module">Module</string>
 
     <string name="action_search">Chercher</string>
-    <string name="action_nb">NB</string>
+    <string name="action_nb">Nombre à afficher</string>
     <string name="action_semester">Semestre</string>
 
     <string name="numberofmarks">Nombre de notes à afficher</string>
@@ -73,11 +74,11 @@
         <item>Tous</item>
     </string-array>
 
-    <!-- Values of modules RecyclerView-->
+    <!-- Values of module RecyclerView-->
     <string name="grade_img_desc">Grade Background</string>
     <string name="grade">A</string>
     <string name="codemodule">G-EPI-42</string>
 
-    <string name="numberofmodules">Nombre de modules à afficher</string>
+    <string name="numberofmodules">Nombre de module à afficher</string>
 
 </resources>

@@ -1,6 +1,6 @@
 package com.nico_11_riv.intranetepitech.database.setters.marks;
 
-import com.nico_11_riv.intranetepitech.database.Marks;
+import com.nico_11_riv.intranetepitech.database.Mark;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 
 import org.json.JSONArray;
@@ -20,20 +20,20 @@ public class PMarks {
             JSONObject json = new JSONObject(api);
             if (json.has("notes")) {
                 JSONArray marks = json.getJSONArray("notes");
-                List<Marks> m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ?", user.getLogin());
+                List<Mark> m = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ?", user.getLogin());
                 for (int n = 0; n < m.size(); n++) {
-                    Marks mark = m.get(n);
+                    Mark mark = m.get(n);
                     mark.setOld(true);
                     mark.save();
                 }
                 for (int i = 0; i < marks.length(); ++i) {
                     JSONObject tmp = marks.getJSONObject(i);
-                    Marks note;
-                    m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ? AND codeacti = ?", user.getLogin(), !Objects.equals(tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a");
+                    Mark note;
+                    m = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ? AND codeacti = ?", user.getLogin(), !Objects.equals(tmp.getString("codeacti"), "null") ? tmp.getString("codeacti") : "n/a");
                     if (m.size() > 0)
                         note = m.get(0);
                     else
-                        note = new Marks(user.getLogin());
+                        note = new Mark(user.getLogin());
                     note.setOld(false);
                     note.setScolyear(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a");
                     note.setCodemodule(!Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
@@ -47,9 +47,9 @@ public class PMarks {
                     note.setComment(!Objects.equals(tmp.getString("comment"), "null") ? tmp.getString("comment") : "Aucun commentaire.");
                     note.save();
                 }
-                m = Marks.findWithQuery(Marks.class, "SELECT * FROM Marks WHERE login = ?", user.getLogin());
+                m = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ?", user.getLogin());
                 for (int n = 0; n < m.size(); n++) {
-                    Marks mark = m.get(n);
+                    Mark mark = m.get(n);
                     if (mark.isOld())
                         mark.delete();
                 }

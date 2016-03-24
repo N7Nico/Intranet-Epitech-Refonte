@@ -12,10 +12,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.Allmodules;
-import com.nico_11_riv.intranetepitech.database.Marks;
-import com.nico_11_riv.intranetepitech.database.Modules;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
-import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
 import com.nico_11_riv.intranetepitech.ui.contents.ModuleContent;
 
 import java.util.List;
@@ -69,7 +66,7 @@ public class RVModulesAdapter extends RecyclerView.Adapter<RVModulesAdapter.View
             new_modules = Allmodules.findWithQuery(Allmodules.class, "SELECT * FROM Allmodules WHERE login = ?", gUser.getLogin());
         modules.clear();
         for (int i = 0; i < new_modules.size(); i++) {
-            if (i == new_modules.size() - position - 1 && position != 0)
+            if (i == position && position != 0)
                 break;
             Allmodules info = new_modules.get(i);
             modules.add(new ModuleContent(info.getGrade(), info.getTitle(), info.getBegin() + " -> " + info.getEnd(), info.getCode()));

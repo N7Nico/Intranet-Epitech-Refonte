@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
-import com.nico_11_riv.intranetepitech.database.Marks;
+import com.nico_11_riv.intranetepitech.database.Mark;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
@@ -87,10 +87,10 @@ public class MarksActivityFragment extends Fragment {
 
     void fillmarksui() {
         ArrayList<MarkContent> items = new ArrayList<>();
-        List<Marks> marks = Select.from(Marks.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+        List<Mark> marks = Select.from(Mark.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
 
         for (int i = marks.size() - 1; i > 0; i--) {
-            Marks info = marks.get(i);
+            Mark info = marks.get(i);
             items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
         setadpt(items);
@@ -123,9 +123,9 @@ public class MarksActivityFragment extends Fragment {
             infos.init(api.getuserinfo(gUser.getLogin()));
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         user_info = new GUserInfos();
@@ -140,9 +140,9 @@ public class MarksActivityFragment extends Fragment {
             m = api.getmarksandmodules(gUser.getLogin());
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         PMarks marks = new PMarks();
@@ -152,9 +152,9 @@ public class MarksActivityFragment extends Fragment {
             api.getuserinfo(gUser.getLogin());
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         fillnewmarksui();

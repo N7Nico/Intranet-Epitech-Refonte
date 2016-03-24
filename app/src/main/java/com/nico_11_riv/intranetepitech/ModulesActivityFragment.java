@@ -13,19 +13,14 @@ import android.widget.Toast;
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.database.Allmodules;
-import com.nico_11_riv.intranetepitech.database.Marks;
-import com.nico_11_riv.intranetepitech.database.Modules;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
-import com.nico_11_riv.intranetepitech.database.setters.marks.PMarks;
 import com.nico_11_riv.intranetepitech.database.setters.modules.PAllModules;
 import com.nico_11_riv.intranetepitech.database.setters.modules.PModules;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
 import com.nico_11_riv.intranetepitech.database.setters.user.PUserInfos;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
-import com.nico_11_riv.intranetepitech.ui.adapters.RVMarksAdapter;
 import com.nico_11_riv.intranetepitech.ui.adapters.RVModulesAdapter;
-import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
 import com.nico_11_riv.intranetepitech.ui.contents.ModuleContent;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -130,9 +125,9 @@ public class ModulesActivityFragment extends Fragment {
             infos.init(api.getuserinfo(gUser.getLogin()));
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         user_info = new GUserInfos();
@@ -147,9 +142,9 @@ public class ModulesActivityFragment extends Fragment {
             m = api.getmarksandmodules(gUser.getLogin());
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         PModules modules = new PModules();
@@ -159,9 +154,9 @@ public class ModulesActivityFragment extends Fragment {
             api.getuserinfo(gUser.getLogin());
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         api.setCookie("PHPSESSID", gUser.getToken());
@@ -170,9 +165,9 @@ public class ModulesActivityFragment extends Fragment {
             mod.init(api.getallmodules());
         } catch (HttpClientErrorException e) {
             Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }  catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         fillnewmodulesui();

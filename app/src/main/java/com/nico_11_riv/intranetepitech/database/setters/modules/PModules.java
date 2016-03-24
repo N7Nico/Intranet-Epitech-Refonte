@@ -1,7 +1,7 @@
 package com.nico_11_riv.intranetepitech.database.setters.modules;
 
 
-import com.nico_11_riv.intranetepitech.database.Modules;
+import com.nico_11_riv.intranetepitech.database.Module;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 
 import org.json.JSONArray;
@@ -20,35 +20,35 @@ public class PModules {
         try {
             JSONObject obj = new JSONObject(api);
             JSONArray json = obj.getJSONArray("modules");
-            List<Modules> m = Modules.findWithQuery(Modules.class, "SELECT * FROM Modules WHERE login = ?", user.getLogin());
+            List<Module> m = Module.findWithQuery(Module.class, "SELECT * FROM Module WHERE login = ?", user.getLogin());
             for (int n = 0; n < m.size(); n++) {
-                Modules module = m.get(n);
+                Module module = m.get(n);
                 module.setOld(true);
                 module.save();
             }
             for (int i = 0; i < json.length(); i++) {
                 JSONObject tmp = json.getJSONObject(i);
-                Modules modules;
-                m = Modules.findWithQuery(Modules.class, "SELECT * FROM Modules WHERE login = ? AND codemodule = ?", user.getLogin(), !Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
+                Module module;
+                m = Module.findWithQuery(Module.class, "SELECT * FROM Module WHERE login = ? AND codemodule = ?", user.getLogin(), !Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
                 if (m.size() > 0)
-                    modules = m.get(0);
+                    module = m.get(0);
                 else
-                    modules = new Modules(user.getLogin());
-                modules.setOld(false);
-                modules.setScolaryear(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a");
-                modules.setCodemodule(!Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
-                modules.setCodeinstance(!Objects.equals(tmp.getString("codeinstance"), "null") ? tmp.getString("codeinstance") : "n/a");
-                modules.setTitle(!Objects.equals(tmp.getString("title"), "null") ? tmp.getString("title") : "n/a");
-                modules.setDate(!Objects.equals(tmp.getString("date_ins"), "null") ? tmp.getString("date_ins") : "n/a");
-                modules.setCycle(!Objects.equals(tmp.getString("cycle"), "null") ? tmp.getString("cycle") : "n/a");
-                modules.setGrade(!Objects.equals(tmp.getString("grade"), "null") ? tmp.getString("grade") : "n/a");
-                modules.setCredits(!Objects.equals(tmp.getString("credits"), "null") ? tmp.getString("credits") : "n/a");
-                modules.setBarrage(!Objects.equals(tmp.getString("barrage"), "null") ? tmp.getString("barrage") : "n/a");
-                modules.save();
+                    module = new Module(user.getLogin());
+                module.setOld(false);
+                module.setScolaryear(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a");
+                module.setCodemodule(!Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
+                module.setCodeinstance(!Objects.equals(tmp.getString("codeinstance"), "null") ? tmp.getString("codeinstance") : "n/a");
+                module.setTitle(!Objects.equals(tmp.getString("title"), "null") ? tmp.getString("title") : "n/a");
+                module.setDate(!Objects.equals(tmp.getString("date_ins"), "null") ? tmp.getString("date_ins") : "n/a");
+                module.setCycle(!Objects.equals(tmp.getString("cycle"), "null") ? tmp.getString("cycle") : "n/a");
+                module.setGrade(!Objects.equals(tmp.getString("grade"), "null") ? tmp.getString("grade") : "n/a");
+                module.setCredits(!Objects.equals(tmp.getString("credits"), "null") ? tmp.getString("credits") : "n/a");
+                module.setBarrage(!Objects.equals(tmp.getString("barrage"), "null") ? tmp.getString("barrage") : "n/a");
+                module.save();
             }
-            m = Modules.findWithQuery(Modules.class, "SELECT * FROM Modules WHERE login = ?", user.getLogin());
+            m = Module.findWithQuery(Module.class, "SELECT * FROM Module WHERE login = ?", user.getLogin());
             for (int n = 0; n < m.size(); n++) {
-                Modules module = m.get(n);
+                Module module = m.get(n);
                 if (module.isOld())
                     module.delete();
             }

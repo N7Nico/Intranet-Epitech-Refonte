@@ -2,24 +2,24 @@ package com.nico_11_riv.intranetepitech.database;
 
 import com.orm.SugarRecord;
 
-public class Modules extends SugarRecord {
+public class Mark extends SugarRecord {
     private String login;
     private boolean old;
-    private String scolaryear;
-    private String semester;
+    private String scolyear;
     private String codemodule;
+    private String titlemodule;
     private String codeinstance;
+    private String codeacti;
     private String title;
     private String date;
-    private String cycle;
-    private String grade;
-    private String credits;
-    private String barrage;
+    private String correcteur;
+    private String finalnote;
+    private String comment;
 
-    public Modules() {
+    public Mark() {
     }
 
-    public Modules(String login) {
+    public Mark(String login) {
         this.login = login;
         this.old = false;
     }
@@ -40,20 +40,12 @@ public class Modules extends SugarRecord {
         this.old = old;
     }
 
-    public String getScolaryear() {
-        return scolaryear;
+    public String getScolyear() {
+        return scolyear;
     }
 
-    public void setScolaryear(String scolaryear) {
-        this.scolaryear = scolaryear;
-    }
-
-    public String getSemester() {
-        return semester;
-    }
-
-    public void setSemester(String semester) {
-        this.semester = semester;
+    public void setScolyear(String scolyear) {
+        this.scolyear = scolyear;
     }
 
     public String getCodemodule() {
@@ -64,12 +56,28 @@ public class Modules extends SugarRecord {
         this.codemodule = codemodule;
     }
 
+    public String getTitlemodule() {
+        return titlemodule;
+    }
+
+    public void setTitlemodule(String titlemodule) {
+        this.titlemodule = titlemodule;
+    }
+
     public String getCodeinstance() {
         return codeinstance;
     }
 
     public void setCodeinstance(String codeinstance) {
         this.codeinstance = codeinstance;
+    }
+
+    public String getCodeacti() {
+        return codeacti;
+    }
+
+    public void setCodeacti(String codeacti) {
+        this.codeacti = codeacti;
     }
 
     public String getTitle() {
@@ -88,35 +96,27 @@ public class Modules extends SugarRecord {
         this.date = date;
     }
 
-    public String getCycle() {
-        return cycle;
+    public String getCorrecteur() {
+        return correcteur;
     }
 
-    public void setCycle(String cycle) {
-        this.cycle = cycle;
+    public void setCorrecteur(String correcteur) {
+        this.correcteur = correcteur;
     }
 
-    public String getGrade() {
-        return grade;
+    public String getFinalnote() {
+        return finalnote;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setFinalnote(String finalnote) {
+        this.finalnote = finalnote;
     }
 
-    public String getCredits() {
-        return credits;
+    public String getComment() {
+        return comment;
     }
 
-    public void setCredits(String credits) {
-        this.credits = credits;
-    }
-
-    public String getBarrage() {
-        return barrage;
-    }
-
-    public void setBarrage(String barrage) {
-        this.barrage = barrage;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
-import com.nico_11_riv.intranetepitech.database.Messages;
+import com.nico_11_riv.intranetepitech.database.Message;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
 import com.nico_11_riv.intranetepitech.ui.contents.MessageContent;
@@ -37,11 +37,11 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
     }
 
     public void background() {
-        List<Messages> new_messages = Messages.findWithQuery(Messages.class, "SELECT * FROM Messages WHERE login = ?", gUser.getLogin());
+        List<Message> new_messages = Message.findWithQuery(Message.class, "SELECT * FROM Message WHERE login = ?", gUser.getLogin());
 
         messages.clear();
         for (int i = 0; i < new_messages.size(); i++) {
-            Messages info = new_messages.get(i);
+            Message info = new_messages.get(i);
             messages.add(new MessageContent(info.getPicture(), info.getDate(), Html.fromHtml(info.getTitle()).toString(), info.getLogincorrector(), Html.fromHtml(info.getContent()).toString()));
         }
         notifyDataSetChanged();

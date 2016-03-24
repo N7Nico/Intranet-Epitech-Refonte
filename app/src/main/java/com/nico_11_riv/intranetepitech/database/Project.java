@@ -5,8 +5,9 @@ import com.orm.SugarRecord;
 /**
  * Created by Jimmy on 02/03/2016.
  */
-public class Projects extends SugarRecord {
+public class Project extends SugarRecord {
     private String login;
+    private boolean old;
     private String scolaryear;
     private String codemodule;
     private String codeinstance;
@@ -31,11 +32,12 @@ public class Projects extends SugarRecord {
     private String userprojectstatus;
     private String fileurl;
 
-    public Projects() {
+    public Project() {
     }
 
-    public Projects(String login) {
+    public Project(String login) {
         this.login = login;
+        this.old = false;
     }
 
     public String getLogin() {
@@ -44,6 +46,14 @@ public class Projects extends SugarRecord {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public boolean isOld() {
+        return old;
+    }
+
+    public void setOld(boolean old) {
+        this.old = old;
     }
 
     public String getScolaryear() {
