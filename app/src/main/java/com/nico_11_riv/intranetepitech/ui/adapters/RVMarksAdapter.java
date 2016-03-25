@@ -41,8 +41,7 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_marks, viewGroup, false);
-        ViewHolder pvh = new ViewHolder(v, context);
-        return pvh;
+        return new ViewHolder(v, context);
     }
 
     @Override

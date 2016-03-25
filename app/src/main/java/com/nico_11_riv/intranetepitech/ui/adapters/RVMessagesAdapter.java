@@ -55,8 +55,7 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_message, viewGroup, false);
-        ViewHolder pvh = new ViewHolder(v, context);
-        return pvh;
+        return new ViewHolder(v, context);
     }
 
     @Override

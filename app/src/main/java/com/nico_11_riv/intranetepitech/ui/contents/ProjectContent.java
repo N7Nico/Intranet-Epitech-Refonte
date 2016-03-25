@@ -2,13 +2,13 @@ package com.nico_11_riv.intranetepitech.ui.contents;
 
 public class ProjectContent {
     private String projectName;
-    private String endDate;
-    private String startDate;
+    private String date;
+    private String moduletitle;
 
-    public ProjectContent(String projectName, String endDate, String startDate) {
+    public ProjectContent(String projectName, String date, String moduletitle) {
         this.projectName = projectName;
-        this.endDate = endDate;
-        this.startDate = startDate;
+        this.date = date;
+        this.moduletitle = moduletitle;
     }
 
     public String getProjectName() {
@@ -19,19 +19,19 @@ public class ProjectContent {
         this.projectName = projectName;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public String getModuletitle() {
+        return moduletitle;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setModuletitle(String moduletitle) {
+        this.moduletitle = moduletitle;
     }
 }

@@ -41,8 +41,7 @@ public class RVModulesAdapter extends RecyclerView.Adapter<RVModulesAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_modules, viewGroup, false);
-        ViewHolder pvh = new ViewHolder(v, context);
-        return pvh;
+        return new ViewHolder(v, context);
     }
 
     @Override

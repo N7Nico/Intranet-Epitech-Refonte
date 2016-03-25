@@ -12,45 +12,47 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.Mark;
+import com.nico_11_riv.intranetepitech.database.Project;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
+import com.nico_11_riv.intranetepitech.ui.contents.ProjectContent;
 
 import java.util.List;
 import java.util.Objects;
 
 /**
+ *
  * Created by nicol on 13/03/2016.
+ *
  */
 
 public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.ViewHolder> {
 
     private GUser gUser = new GUser();
-    private List<MarkContent> marks;
+    private List<ProjectContent> projects;
     private Context context;
 
-    public RVProjectsAdapter(List<MarkContent> marks, Context context) {
-        this.marks = marks;
+    public RVProjectsAdapter(List<ProjectContent> projects, Context context) {
+        this.projects = projects;
         this.context = context;
     }
 
     @Override
     public int getItemCount() {
-        return marks.size();
+        return projects.size();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_marks, viewGroup, false);
-        ViewHolder pvh = new ViewHolder(v, context);
-        return pvh;
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_projects, viewGroup, false);
+        return new ViewHolder(v, context);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder ViewHolder, int i) {
-        ViewHolder.mark.setText(marks.get(i).getMark());
-        ViewHolder.corrector.setText(marks.get(i).getCorrector());
-        ViewHolder.project.setText(marks.get(i).getEvent());
-        ViewHolder.module.setText(marks.get(i).getModule());
+        ViewHolder.project.setText(projects.get(i).getProjectName());
+        ViewHolder.date.setText(projects.get(i).getDate());
+        ViewHolder.module.setText(projects.get(i).getModuletitle());
     }
 
     @Override
@@ -59,46 +61,45 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
     }
 
     public void filter(int position, String semester) {
-        List<Mark> new_marks;
+        List<Project> new_projects;
         if (!Objects.equals(semester, "All"))
-            new_marks = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), semester);
+            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), semester);
         else
-            new_marks = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ?", gUser.getLogin());
-        marks.clear();
-        for (int i = new_marks.size() - 1; i > 0; i--) {
-            if (i == new_marks.size() - position - 1 && position != 0)
+            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", gUser.getLogin());
+        projects.clear();
+        for (int i = new_projects.size() - 1; i > 0; i--) {
+            if (i == new_projects.size() - position - 1 && position != 0)
                 break;
-            Mark info = new_marks.get(i);
-            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            Project info = new_projects.get(i);
+          //  projects.add(new ProjectContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
         notifyDataSetChanged();
     }
 
     public void search(String text) {
-        List<Mark> new_marks;
-        new_marks = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ? AND finalnote LIKE ?", gUser.getLogin(), "%" + text + "%");
-        if (new_marks.size() == 0) {
-            new_marks = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ? AND title LIKE ?", gUser.getLogin(), "%" + text + "%");
-            if (new_marks.size() == 0) {
-                new_marks = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ? AND correcteur LIKE ?", gUser.getLogin(), "%" + text + "%");
-                if (new_marks.size() == 0) {
-                    new_marks = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), "%" + text + "%");
+        List<Project> new_projects;
+        new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND finalnote LIKE ?", gUser.getLogin(), "%" + text + "%");
+        if (new_projects.size() == 0) {
+            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND title LIKE ?", gUser.getLogin(), "%" + text + "%");
+            if (new_projects.size() == 0) {
+                new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND correcteur LIKE ?", gUser.getLogin(), "%" + text + "%");
+                if (new_projects.size() == 0) {
+                    new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), "%" + text + "%");
                 }
             }
         }
-        marks.clear();
-        for (int i = new_marks.size() - 1; i > 0; i--) {
-            Mark info = new_marks.get(i);
-            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+        projects.clear();
+        for (int i = new_projects.size() - 1; i > 0; i--) {
+            Project info = new_projects.get(i);
+         //   projects.add(new ProjectContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
         }
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cv;
-        TextView mark;
-        TextView corrector;
         TextView project;
+        TextView date;
         TextView module;
         Context context;
 
@@ -109,65 +110,19 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
             this.context = context;
 
             cv = (CardView) itemView.findViewById(R.id.cv);
-            mark = (TextView) itemView.findViewById(R.id.mark);
-            corrector = (TextView) itemView.findViewById(R.id.corrector);
             project = (TextView) itemView.findViewById(R.id.project);
+            date = (TextView) itemView.findViewById(R.id.date);
             module = (TextView) itemView.findViewById(R.id.module);
-        }
-
-        public String escape(String s) {
-            StringBuilder builder = new StringBuilder();
-            boolean previousWasASpace = false;
-            for (char c : s.toCharArray()) {
-                if (c == ' ') {
-                    if (previousWasASpace) {
-                        builder.append("&nbsp;");
-                        previousWasASpace = false;
-                        continue;
-                    }
-                    previousWasASpace = true;
-                } else {
-                    previousWasASpace = false;
-                }
-                switch (c) {
-                    case '<':
-                        builder.append("&lt;");
-                        break;
-                    case '>':
-                        builder.append("&gt;");
-                        break;
-                    case '&':
-                        builder.append("&amp;");
-                        break;
-                    case '"':
-                        builder.append("&quot;");
-                        break;
-                    case '\n':
-                        builder.append("<br>");
-                        break;
-                    // We need Tab support here, because we print StackTraces as HTML
-                    case '\t':
-                        builder.append("&nbsp; &nbsp; &nbsp;");
-                        break;
-                    default:
-                        if (c < 128) {
-                            builder.append(c);
-                        } else {
-                            builder.append("&#").append((int) c).append(";");
-                        }
-                }
-            }
-            return builder.toString();
         }
 
         @Override
         public void onClick(View view) {
 
-            List<Mark> marks = Mark.findWithQuery(Mark.class, "Select * FROM Mark WHERE finalnote = ? AND correcteur = ? AND title = ? AND titlemodule = ?", mark.getText().toString(), corrector.getText().toString(), project.getText().toString(), module.getText().toString());
-            Mark mark = marks.get(0);
+            List<Project> projects = Project.findWithQuery(Project.class, "Select * FROM Project WHERE projecttitle = ? AND moduletitle = ?", project.getText().toString(), module.getText().toString());
+            Project project = projects.get(0);
             new MaterialDialog.Builder(context)
-                    .title(mark.getTitle())
-                    .content(Html.fromHtml("<b>Note :</b> " + mark.getFinalnote() + "<br /><b>Correcteur :</b> " + mark.getCorrecteur() + "<br /><b>Module :</b> " + mark.getTitlemodule() + "<br /><br />" + escape(mark.getComment())))
+                    .title(project.getTitle())
+                    .content(Html.fromHtml("<b>Date :</b> " + project.getBegin() + " -> " + project.getEnd() + "<br /><b>Module :</b> " + project.getModuletitle() + "<br /><b>Description :</b><br /><br />" + project.getDescription()))
                     .negativeText("Retour")
                     .icon(context.getDrawable(R.drawable.logo)).limitIconToDefaultSize()
                     .show();
