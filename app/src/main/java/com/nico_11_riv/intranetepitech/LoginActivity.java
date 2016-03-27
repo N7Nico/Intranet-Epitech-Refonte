@@ -3,7 +3,6 @@ package com.nico_11_riv.intranetepitech;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,6 +17,8 @@ import com.nico_11_riv.intranetepitech.api.IntrAPI;
 import com.nico_11_riv.intranetepitech.api.requests.LoginRequest;
 import com.nico_11_riv.intranetepitech.database.User;
 import com.nico_11_riv.intranetepitech.database.setters.user.PUser;
+import com.nico_11_riv.intranetepitech.toolbox.GenerateToken;
+import com.nico_11_riv.intranetepitech.toolbox.IsConnected;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -60,26 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         api.setRestErrorHandler(ErrorHandler);
     }
 
-    private boolean isConnected() {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            return cm.getActiveNetworkInfo().isConnectedOrConnecting();
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    String generateToken() {
-        char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < 26; i++) {
-            char c = chars[random.nextInt(chars.length)];
-            sb.append(c);
-        }
-        return (sb.toString());
-    }
-
     boolean check_user(String login) {
         String restapi = api.getuserinfo(login);
         try {
@@ -116,12 +97,13 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean connectNetwork(String login, String passwd) {
         LoginRequest lr = new LoginRequest(login, passwd);
-        String tokengenerate = generateToken();
-        api.setCookie("PHPSESSID", tokengenerate);
+        GenerateToken gt = new GenerateToken();
+        String token = gt.gen();
+        api.setCookie("PHPSESSID", token);
         try {
             api.sendToken(lr);
             if (check_user(login)) {
-                User u = new User(login, passwd, tokengenerate, "true");
+                User u = new User(login, passwd, token, "true");
                 u.save();
                 return false;
             }
@@ -138,10 +120,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @UiThread
-    void settingFieldError() {
+    void reset() {
         vlogin.setError(null);
         vpasswd.setError(null);
-        login_button.setText("Connexion");
+        login_button.setText(R.string.action_sign_in);
     }
 
     @UiThread
@@ -163,12 +145,11 @@ public class LoginActivity extends AppCompatActivity {
     void attemptLogin() {
         String login = vlogin.getText().toString().replaceAll("\\s", "");
         String passwd = vpasswd.getText().toString();
-
         View focusView = null;
-
         boolean cancel = false;
+        IsConnected ic = new IsConnected(getApplicationContext());
 
-        settingFieldError();
+        reset();
 
         if (TextUtils.isEmpty(passwd)) {
             setPasswdRequired();
@@ -191,10 +172,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity_.class));
             } else if (User.count(User.class, "login = ?", new String[]{login}) == 1) {
                 error_connect("Mauvais Mot de Passe");
-            } else if (isConnected() == false) {
+            } else if (!ic.connected()) {
+                progressBarGone();
                 error_connect("Connection Internet Requise");
             } else {
-                if (connectNetwork(login, passwd) == false) {
+                if (!connectNetwork(login, passwd)) {
                     startActivity(new Intent(this, ProfileActivity_.class));
                 }
             }

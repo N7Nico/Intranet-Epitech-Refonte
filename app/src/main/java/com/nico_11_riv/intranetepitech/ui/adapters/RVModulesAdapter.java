@@ -91,12 +91,11 @@ public class RVModulesAdapter extends RecyclerView.Adapter<RVModulesAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CardView cv;
-        TextView grade;
-        TextView module;
-        TextView date;
-        TextView codemodule;
-        Context context;
+        private TextView grade;
+        private TextView module;
+        private TextView date;
+        private TextView codemodule;
+        private Context context;
 
         ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -104,7 +103,6 @@ public class RVModulesAdapter extends RecyclerView.Adapter<RVModulesAdapter.View
 
             this.context = context;
 
-            cv = (CardView) itemView.findViewById(R.id.cv);
             grade = (TextView) itemView.findViewById(R.id.grade);
             module = (TextView) itemView.findViewById(R.id.module);
             date = (TextView) itemView.findViewById(R.id.date);
@@ -118,7 +116,7 @@ public class RVModulesAdapter extends RecyclerView.Adapter<RVModulesAdapter.View
             Allmodules module = modules.get(0);
             new MaterialDialog.Builder(context)
                     .title(module.getTitle())
-                    .content(Html.fromHtml("<b>Grade :</b> " + module.getGrade() + "<br /><b>Code Module :</b> " + module.getCode() + "<br /><b>Date :</b> " + module.getBegin() + " -> " + module.getEnd()))
+                    .content(Html.fromHtml("<b>Grade :</b> " + module.getGrade() + "<br /><br /><b>Code Module :</b> " + module.getCode() + "<br /><br /><b>Date :</b> " + module.getBegin() + " -> " + module.getEnd()))
                     .negativeText("Retour")
                     .icon(context.getDrawable(R.drawable.logo)).limitIconToDefaultSize()
                     .show();

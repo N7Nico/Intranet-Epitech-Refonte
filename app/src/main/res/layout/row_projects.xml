@@ -14,32 +14,6 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <FrameLayout
-                android:id="@+id/grade_container"
-                android:layout_width="60dp"
-                android:layout_height="65dp"
-                android:layout_centerVertical="true">
-                <ImageView
-                    android:id="@+id/list_icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/list_icon_bg"
-                    android:elevation="6dp"
-                    android:contentDescription="@string/grade_img_desc" />
-
-                <TextView
-                    android:id="@+id/grade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textSize="12sp"
-                    android:textColor="#fff"
-                    android:text="@string/grade"
-                    android:elevation="10dp"
-                    android:textStyle="bold" />
-            </FrameLayout>
-
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
@@ -50,22 +24,22 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/module"
+                android:id="@+id/project"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/date"
-                android:layout_toEndOf="@+id/grade_container"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:text="@string/module" />
+                android:text="@string/project" />
 
             <TextView
-                android:id="@+id/codemodule"
+                android:id="@+id/module"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/module"
+                android:layout_below="@+id/project"
                 android:layout_marginTop="16dp"
-                android:text="@string/codemodule"
+                android:text="@string/module"
                 android:textSize="12sp"
                 android:textStyle="bold" />
         </RelativeLayout>

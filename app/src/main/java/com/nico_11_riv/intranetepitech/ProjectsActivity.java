@@ -27,15 +27,15 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-@EActivity(R.layout.activity_marks)
-public class MarksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+@EActivity(R.layout.activity_projects)
+public class ProjectsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static int def_nb = 8;
     private static int def_semester = 11;
     private SearchView searchView;
 
-    @FragmentById(R.id.fragment_marks)
-    MarksActivityFragment fragment;
+    @FragmentById(R.id.fragment_projects)
+    ProjectsActivityFragment fragment;
 
     @ViewById
     Toolbar toolbar;
@@ -111,7 +111,7 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_marks, menu);
+        getMenuInflater().inflate(R.menu.menu_projects, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
@@ -134,7 +134,7 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
         switch (item.getItemId()) {
             case R.id.action_nb:
                 new MaterialDialog.Builder(this)
-                        .title(R.string.numberofmarks)
+                        .title(R.string.numberofprojects)
                         .items(R.array.number_array)
                         .itemsCallbackSingleChoice(def_nb, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override

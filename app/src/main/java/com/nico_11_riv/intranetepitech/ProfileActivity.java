@@ -1,6 +1,7 @@
 package com.nico_11_riv.intranetepitech;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.database.User;
 
 import org.androidannotations.annotations.AfterViews;
@@ -58,7 +61,23 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            new MaterialDialog.Builder(this)
+                    .title(R.string.exit)
+                    .negativeText("Retour")
+                    .positiveText("Oui")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            List<User> users = User.find(User.class, "connected = ?", "true");
+                            if (users.size() > 0) {
+                                users.get(0).setConnected("false");
+                                users.get(0).save();
+                            }
+                            startActivity(new Intent(getApplicationContext(), LoginActivity_.class));
+                        }
+                    })
+                    .icon(getApplicationContext().getDrawable(R.drawable.logo)).limitIconToDefaultSize()
+                    .show();
         }
     }
 
@@ -99,7 +118,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             drawer_layout.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, ModulesActivity_.class));
         } else if (id == R.id.nav_projects) {
-
+            drawer_layout.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(this, ProjectsActivity_.class));
         } else if (id == R.id.nav_schedule) {
 
         } else if (id == R.id.nav_logout) {

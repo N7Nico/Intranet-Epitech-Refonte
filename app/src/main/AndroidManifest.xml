@@ -17,7 +17,7 @@
             android:value="intranetepitech.db" />
         <meta-data
             android:name="VERSION"
-            android:value="2" />
+            android:value="4" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -28,7 +28,8 @@
         <activity
             android:name=".LoginActivity_"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,11 +40,12 @@
             android:name=".ProfileActivity_"
             android:label="@string/title_profile"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".MarksActivity_"
             android:label="@string/title_marks"
             android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -56,6 +58,7 @@
             android:name=".ModulesActivity_"
             android:label="@string/title_modules"
             android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -68,6 +71,7 @@
             android:name=".ProjectsActivity_"
             android:label="@string/title_projects"
             android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

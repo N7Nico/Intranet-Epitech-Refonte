@@ -76,13 +76,12 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CardView cv;
-        ImageView person_img;
-        TextView date;
-        TextView message;
-        TextView person_name;
-        TextView description;
-        Context context;
+        private ImageView person_img;
+        private TextView date;
+        private TextView message;
+        private TextView person_name;
+        private TextView description;
+        private Context context;
 
         ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -90,7 +89,6 @@ public class RVMessagesAdapter extends RecyclerView.Adapter<RVMessagesAdapter.Vi
 
             this.context = context;
 
-            cv = (CardView) itemView.findViewById(R.id.cv);
             person_img = (ImageView) itemView.findViewById(R.id.person_img);
             date = (TextView) itemView.findViewById(R.id.date);
             message = (TextView) itemView.findViewById(R.id.message);

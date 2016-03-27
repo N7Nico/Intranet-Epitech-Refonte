@@ -32,7 +32,6 @@ public class ModulesActivity extends AppCompatActivity implements NavigationView
 
     private static int def_nb = 8;
     private static int def_semester = 11;
-    private SearchManager searchManager;
     private SearchView searchView;
 
     @FragmentById(R.id.fragment_modules)
@@ -112,9 +111,9 @@ public class ModulesActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_marksandmodules, menu);
+        getMenuInflater().inflate(R.menu.menu_modules, menu);
 
-        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
@@ -186,7 +185,8 @@ public class ModulesActivity extends AppCompatActivity implements NavigationView
             drawer_layout.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, ModulesActivity_.class));
         } else if (id == R.id.nav_projects) {
-
+            drawer_layout.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(this, ProjectsActivity_.class));
         } else if (id == R.id.nav_schedule) {
 
         } else if (id == R.id.nav_logout) {

@@ -5,15 +5,13 @@ public class MarkContent {
     private String corrector;
     private String event;
     private String module;
-    private String content;
 
-    public MarkContent(String mark, String corrector, String event, String module, String content) {
+    public MarkContent(String mark, String corrector, String event, String module) {
         super();
         this.mark = mark;
         this.corrector = corrector;
         this.event = event;
         this.module = module;
-        this.content = content;
     }
 
     public String getMark() {
@@ -46,13 +44,5 @@ public class MarkContent {
 
     public void setModule(String module) {
         this.module = module;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 }

@@ -4,22 +4,28 @@
     <string name="title_marks">Notes</string>
     <string name="title_modules">Modules</string>
     <string name="title_projects">Projects</string>
+    <string name="title_planning">Planning</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="misc">Misc</string>
+    <string name="deconnexion">Déconnexion</string>
+
     <string name="search_hint">Chercher</string>
+
+    <string name="noinfos">Aucune information à afficher</string>
 
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sodales sagittis molestie.</string>
 
-    <!-- Values of login activity-->
+    <!-- Values of login -->
 
     <string name="error_field_required">Ce champ est obligatoire</string>
     <string name="login">Login</string>
     <string name="passwd">Mot de Passe Unix</string>
     <string name="action_sign_in">Connexion</string>
 
-    <!-- Values of profile card-->
+    <!-- Values of profile -->
 
     <string name="student_img_desc">Student Img</string>
     <string name="login_n">login_n</string>
@@ -29,12 +35,13 @@
     <string name="semester">Semestre :</string>
     <string name="credits">Crédits :</string>
     <string name="na">n/a</string>
+    <string name="exit">Se déconnecter ?</string>
 
-    <!-- Values of messages RecyclerView-->
+    <!-- Values of messages -->
     <string name="profile_img_desc">Profile Img</string>
     <string name="date">2042-01-24 23:42:00</string>
 
-    <!-- Values of marks RecyclerView-->
+    <!-- Values of marks -->
     <string name="mark_img_desc">Mark Background</string>
     <string name="mark">42</string>
     <string name="corrector">corrector_l</string>
@@ -74,11 +81,16 @@
         <item>Tous</item>
     </string-array>
 
-    <!-- Values of module RecyclerView-->
+    <!-- Values of modules -->
     <string name="grade_img_desc">Grade Background</string>
     <string name="grade">A</string>
+    <string name="timeline">2042-01-24 -> 2042-01-42</string>
     <string name="codemodule">G-EPI-42</string>
 
     <string name="numberofmodules">Nombre de module à afficher</string>
+
+    <!-- Values of projects -->
+
+    <string name="numberofprojects">Nombre de projects à afficher</string>
 
 </resources>

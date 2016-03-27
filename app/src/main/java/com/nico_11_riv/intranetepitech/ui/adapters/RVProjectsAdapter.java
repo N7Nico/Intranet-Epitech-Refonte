@@ -50,7 +50,7 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder ViewHolder, int i) {
-        ViewHolder.project.setText(projects.get(i).getProjectName());
+        ViewHolder.project.setText(projects.get(i).getTitle());
         ViewHolder.date.setText(projects.get(i).getDate());
         ViewHolder.module.setText(projects.get(i).getModuletitle());
     }
@@ -63,7 +63,7 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
     public void filter(int position, String semester) {
         List<Project> new_projects;
         if (!Objects.equals(semester, "All"))
-            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), semester);
+            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND moduletitle LIKE ?", gUser.getLogin(), semester);
         else
             new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", gUser.getLogin());
         projects.clear();
@@ -71,37 +71,30 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
             if (i == new_projects.size() - position - 1 && position != 0)
                 break;
             Project info = new_projects.get(i);
-          //  projects.add(new ProjectContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            projects.add(new ProjectContent(info.getTitle(), info.getBegin() + " -> " + info.getEnd(), info.getModuletitle()));
         }
         notifyDataSetChanged();
     }
 
     public void search(String text) {
         List<Project> new_projects;
-        new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND finalnote LIKE ?", gUser.getLogin(), "%" + text + "%");
+        new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND title LIKE ?", gUser.getLogin(), "%" + text + "%");
         if (new_projects.size() == 0) {
-            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND title LIKE ?", gUser.getLogin(), "%" + text + "%");
-            if (new_projects.size() == 0) {
-                new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND correcteur LIKE ?", gUser.getLogin(), "%" + text + "%");
-                if (new_projects.size() == 0) {
-                    new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND titlemodule LIKE ?", gUser.getLogin(), "%" + text + "%");
-                }
-            }
+            new_projects = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ? AND moduletitle LIKE ?", gUser.getLogin(), "%" + text + "%");
         }
         projects.clear();
         for (int i = new_projects.size() - 1; i > 0; i--) {
             Project info = new_projects.get(i);
-         //   projects.add(new ProjectContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            projects.add(new ProjectContent(info.getTitle(), info.getBegin() + " -> " + info.getEnd(), info.getModuletitle()));
         }
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CardView cv;
-        TextView project;
-        TextView date;
-        TextView module;
-        Context context;
+        private TextView project;
+        private TextView date;
+        private TextView module;
+        private Context context;
 
         ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -109,7 +102,6 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
 
             this.context = context;
 
-            cv = (CardView) itemView.findViewById(R.id.cv);
             project = (TextView) itemView.findViewById(R.id.project);
             date = (TextView) itemView.findViewById(R.id.date);
             module = (TextView) itemView.findViewById(R.id.module);
@@ -117,12 +109,11 @@ public class RVProjectsAdapter extends RecyclerView.Adapter<RVProjectsAdapter.Vi
 
         @Override
         public void onClick(View view) {
-
-            List<Project> projects = Project.findWithQuery(Project.class, "Select * FROM Project WHERE projecttitle = ? AND moduletitle = ?", project.getText().toString(), module.getText().toString());
+            List<Project> projects = Project.findWithQuery(Project.class, "Select * FROM Project WHERE title = ? AND moduletitle = ?", project.getText().toString(), module.getText().toString());
             Project project = projects.get(0);
             new MaterialDialog.Builder(context)
                     .title(project.getTitle())
-                    .content(Html.fromHtml("<b>Date :</b> " + project.getBegin() + " -> " + project.getEnd() + "<br /><b>Module :</b> " + project.getModuletitle() + "<br /><b>Description :</b><br /><br />" + project.getDescription()))
+                    .content(Html.fromHtml("<b>Date :</b> " + project.getBegin() + " -> " + project.getEnd() + "<br /><br /><b>Module :</b> " + project.getModuletitle() + "<br /><br /><b>Description :</b><br />" + project.getDescription()))
                     .negativeText("Retour")
                     .icon(context.getDrawable(R.drawable.logo)).limitIconToDefaultSize()
                     .show();

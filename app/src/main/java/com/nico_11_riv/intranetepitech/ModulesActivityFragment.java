@@ -20,6 +20,7 @@ import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
 import com.nico_11_riv.intranetepitech.database.setters.user.PUserInfos;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
+import com.nico_11_riv.intranetepitech.toolbox.IsConnected;
 import com.nico_11_riv.intranetepitech.ui.adapters.RVModulesAdapter;
 import com.nico_11_riv.intranetepitech.ui.contents.ModuleContent;
 import com.orm.query.Condition;
@@ -40,14 +41,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
  * Created by nicol on 15/03/2016.
+ *
  */
 
-@EFragment(R.layout.fragment_marksandmodules)
+@EFragment(R.layout.fragment_modules)
 public class ModulesActivityFragment extends Fragment {
 
     private static int def_nb = 8;
     private static int def_semester = 11;
+    private IsConnected ic;
 
     @RestService
     IntrAPI api;
@@ -59,7 +63,10 @@ public class ModulesActivityFragment extends Fragment {
     RecyclerView rv;
 
     @ViewById
-    ProgressBar marksormodules_progress;
+    ProgressBar modules_progress;
+
+    @ViewById
+    TextView noinfos;
 
     private GUser gUser = new GUser();
     private GUserInfos user_info = new GUserInfos();
@@ -100,7 +107,6 @@ public class ModulesActivityFragment extends Fragment {
 
     @UiThread
     void fillnewmodulesui() {
-        marksormodules_progress.setVisibility(View.GONE);
         if (def_nb != 8) {
             if (def_semester != 11)
                 adapter.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
@@ -118,69 +124,80 @@ public class ModulesActivityFragment extends Fragment {
         List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
-        Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
-        api.setCookie("PHPSESSID", gUser.getToken());
-        try {
-            PUserInfos infos = new PUserInfos();
-            infos.init(api.getuserinfo(gUser.getLogin()));
-        } catch (HttpClientErrorException e) {
-            Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (NullPointerException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+        if (ic.connected()) {
+            Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
+            api.setCookie("PHPSESSID", gUser.getToken());
+            try {
+                PUserInfos infos = new PUserInfos();
+                infos.init(api.getuserinfo(gUser.getLogin()));
+            } catch (HttpClientErrorException e) {
+                Log.d("Response", e.getResponseBodyAsString());
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            user_info = new GUserInfos();
+            filluserinfosui();
         }
-        user_info = new GUserInfos();
-        filluserinfosui();
     }
 
     void setModules() {
         fillmodulesui();
-        String m = null;
-        api.setCookie("PHPSESSID", gUser.getToken());
-        try {
-            m = api.getmarksandmodules(gUser.getLogin());
-        } catch (HttpClientErrorException e) {
-            Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (NullPointerException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+        if (ic.connected()) {
+            String m = null;
+            api.setCookie("PHPSESSID", gUser.getToken());
+            try {
+                m = api.getmarksandmodules(gUser.getLogin());
+            } catch (HttpClientErrorException e) {
+                Log.d("Response", e.getResponseBodyAsString());
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            PModules modules = new PModules();
+            modules.init(m);
+            api.setCookie("PHPSESSID", gUser.getToken());
+            try {
+                api.getuserinfo(gUser.getLogin());
+            } catch (HttpClientErrorException e) {
+                Log.d("Response", e.getResponseBodyAsString());
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            api.setCookie("PHPSESSID", gUser.getToken());
+            try {
+                PAllModules mod = new PAllModules();
+                mod.init(api.getallmodules());
+            } catch (HttpClientErrorException e) {
+                Log.d("Response", e.getResponseBodyAsString());
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }  catch (NullPointerException e) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+            fillnewmodulesui();
         }
-        PModules modules = new PModules();
-        modules.init(m);
-        api.setCookie("PHPSESSID", gUser.getToken());
-        try {
-            api.getuserinfo(gUser.getLogin());
-        } catch (HttpClientErrorException e) {
-            Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (NullPointerException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        api.setCookie("PHPSESSID", gUser.getToken());
-        try {
-            PAllModules mod = new PAllModules();
-            mod.init(api.getallmodules());
-        } catch (HttpClientErrorException e) {
-            Log.d("Response", e.getResponseBodyAsString());
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }  catch (NullPointerException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        fillnewmodulesui();
+    }
+
+    @UiThread
+    void setProgressBar() {
+        modules_progress.setVisibility(View.GONE);
     }
 
     @Background
     void profile_modules() {
         setUserInfos();
         setModules();
+        setProgressBar();
     }
 
     @AfterViews
     void init() {
+        ic = new IsConnected(getActivity().getApplicationContext());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         profile_modules();
@@ -192,13 +209,13 @@ public class ModulesActivityFragment extends Fragment {
             def_semester = def_semester_act;
             adapter.filter(size, semester);
         } else
-            Toast.makeText(getContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }
 
     public void search(String text) {
         if (adapter != null)
             adapter.search(text);
         else
-            Toast.makeText(getContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }
 }

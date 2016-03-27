@@ -106,12 +106,6 @@ public class PProjects {
             object = new JSONObject(returnapi);
             if (object.has("activites") && Objects.equals(object.getString("student_registered"), "1")) {
                 JSONArray array = object.getJSONArray("activites");
-                m = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", user.getLogin());
-                for (int n = 0; n < m.size(); n++) {
-                    Project project = m.get(n);
-                    project.setOld(true);
-                    project.save();
-                }
                 for (int a = 0; a < array.length(); a++) {
                     try {
                         JSONObject tmp = array.getJSONObject(a);
@@ -122,12 +116,6 @@ public class PProjects {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                m = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", user.getLogin());
-                for (int n = 0; n < m.size(); n++) {
-                    Project project = m.get(n);
-                    if (project.isOld())
-                        project.delete();
                 }
             }
         } catch (JSONException e) {
@@ -175,9 +163,21 @@ public class PProjects {
             e.printStackTrace();
         }
 
-        List<Allmodules> m = Allmodules.findWithQuery(Allmodules.class, "SELECT * FROM Allmodules WHERE login = ?", this.user.getLogin());
-        for (int i = 0; i < m.size(); i++) {
-            parsemodules(m, i, api);
+        List<Allmodules> ms = Allmodules.findWithQuery(Allmodules.class, "SELECT * FROM Allmodules WHERE login = ?", this.user.getLogin());
+        m = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", user.getLogin());
+        for (int n = 0; n < m.size(); n++) {
+            Project project = m.get(n);
+            project.setOld(true);
+            project.save();
+        }
+        for (int i = 0; i < ms.size(); i++) {
+            parsemodules(ms, i, api);
+        }
+        m = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", user.getLogin());
+        for (int n = 0; n < m.size(); n++) {
+            Project project = m.get(n);
+            if (project.isOld())
+                project.delete();
         }
     }
 }

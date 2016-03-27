@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.R;
 import com.nico_11_riv.intranetepitech.database.Mark;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
+import com.nico_11_riv.intranetepitech.toolbox.ToHTML;
 import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
             if (i == new_marks.size() - position - 1 && position != 0)
                 break;
             Mark info = new_marks.get(i);
-            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule()));
         }
         notifyDataSetChanged();
     }
@@ -88,18 +89,18 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
         marks.clear();
         for (int i = new_marks.size() - 1; i > 0; i--) {
             Mark info = new_marks.get(i);
-            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule(), info.getComment()));
+            marks.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule()));
         }
         notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CardView cv;
-        TextView mark;
-        TextView corrector;
-        TextView project;
-        TextView module;
-        Context context;
+        private TextView mark;
+        private TextView corrector;
+        private TextView project;
+        private TextView module;
+        private Context context;
+        private ToHTML to = new ToHTML();
 
         ViewHolder(View itemView, Context context) {
             super(itemView);
@@ -107,56 +108,10 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
 
             this.context = context;
 
-            cv = (CardView) itemView.findViewById(R.id.cv);
             mark = (TextView) itemView.findViewById(R.id.mark);
             corrector = (TextView) itemView.findViewById(R.id.corrector);
             project = (TextView) itemView.findViewById(R.id.project);
             module = (TextView) itemView.findViewById(R.id.module);
-        }
-
-        public String escape(String s) {
-            StringBuilder builder = new StringBuilder();
-            boolean previousWasASpace = false;
-            for (char c : s.toCharArray()) {
-                if (c == ' ') {
-                    if (previousWasASpace) {
-                        builder.append("&nbsp;");
-                        previousWasASpace = false;
-                        continue;
-                    }
-                    previousWasASpace = true;
-                } else {
-                    previousWasASpace = false;
-                }
-                switch (c) {
-                    case '<':
-                        builder.append("&lt;");
-                        break;
-                    case '>':
-                        builder.append("&gt;");
-                        break;
-                    case '&':
-                        builder.append("&amp;");
-                        break;
-                    case '"':
-                        builder.append("&quot;");
-                        break;
-                    case '\n':
-                        builder.append("<br>");
-                        break;
-                    // We need Tab support here, because we print StackTraces as HTML
-                    case '\t':
-                        builder.append("&nbsp; &nbsp; &nbsp;");
-                        break;
-                    default:
-                        if (c < 128) {
-                            builder.append(c);
-                        } else {
-                            builder.append("&#").append((int) c).append(";");
-                        }
-                }
-            }
-            return builder.toString();
         }
 
         @Override
@@ -166,7 +121,7 @@ public class RVMarksAdapter extends RecyclerView.Adapter<RVMarksAdapter.ViewHold
             Mark mark = marks.get(0);
             new MaterialDialog.Builder(context)
                     .title(mark.getTitle())
-                    .content(Html.fromHtml("<b>Note :</b> " + mark.getFinalnote() + "<br /><b>Correcteur :</b> " + mark.getCorrecteur() + "<br /><b>Module :</b> " + mark.getTitlemodule() + "<br /><br />" + escape(mark.getComment())))
+                    .content(Html.fromHtml("<b>Note :</b> " + mark.getFinalnote() + "<br /><b>Correcteur :</b> " + mark.getCorrecteur() + "<br /><b>Module :</b> " + mark.getTitlemodule() + "<br /><br /><b>Commentaire :</b><br />" + to.html(mark.getComment())))
                     .negativeText("Retour")
                     .icon(context.getDrawable(R.drawable.logo)).limitIconToDefaultSize()
                     .show();

@@ -12,16 +12,16 @@ import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
-import com.nico_11_riv.intranetepitech.database.Mark;
+import com.nico_11_riv.intranetepitech.database.Project;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
-import com.nico_11_riv.intranetepitech.database.setters.marks.PMarks;
+import com.nico_11_riv.intranetepitech.database.setters.projects.PProjects;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUserInfos;
 import com.nico_11_riv.intranetepitech.database.setters.user.PUserInfos;
 import com.nico_11_riv.intranetepitech.toolbox.CircleTransform;
 import com.nico_11_riv.intranetepitech.toolbox.IsConnected;
-import com.nico_11_riv.intranetepitech.ui.adapters.RVMarksAdapter;
-import com.nico_11_riv.intranetepitech.ui.contents.MarkContent;
+import com.nico_11_riv.intranetepitech.ui.adapters.RVProjectsAdapter;
+import com.nico_11_riv.intranetepitech.ui.contents.ProjectContent;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 import com.squareup.picasso.Picasso;
@@ -40,13 +40,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Created by nicol on 15/03/2016.
- *
  */
 
-@EFragment(R.layout.fragment_marks)
-public class MarksActivityFragment extends Fragment {
+@EFragment(R.layout.fragment_projects)
+public class ProjectsActivityFragment extends Fragment {
+
+    private static int def_nb = 8;
+    private static int def_semester = 11;
 
     @RestService
     IntrAPI api;
@@ -58,13 +59,11 @@ public class MarksActivityFragment extends Fragment {
     RecyclerView rv;
 
     @ViewById
-    ProgressBar marks_progress;
+    ProgressBar projects_progress;
 
     private GUser gUser = new GUser();
     private GUserInfos user_info = new GUserInfos();
-    private RVMarksAdapter adapter;
-    private static int def_nb = 8;
-    private static int def_semester = 11;
+    private RVProjectsAdapter adapter;
     private IsConnected ic;
 
     @AfterInject
@@ -73,8 +72,8 @@ public class MarksActivityFragment extends Fragment {
     }
 
     @UiThread
-    void setadpt(ArrayList<MarkContent> items) {
-        adapter = new RVMarksAdapter(items, getContext());
+    void setadpt(ArrayList<ProjectContent> items) {
+        adapter = new RVProjectsAdapter(items, getContext());
         rv.setAdapter(adapter);
     }
 
@@ -82,26 +81,26 @@ public class MarksActivityFragment extends Fragment {
     void filluserinfosui() {
         TextView tv = (TextView) getActivity().findViewById(R.id.menu_login);
         tv.setText(user_info.getLogin());
-        tv = (TextView)getActivity().findViewById(R.id.menu_email);
+        tv = (TextView) getActivity().findViewById(R.id.menu_email);
         tv.setText(user_info.getEmail());
 
         ImageView iv = (ImageView) getActivity().findViewById(R.id.menu_img);
-        Picasso.with(getContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
+        Picasso.with(getActivity().getApplicationContext()).load(user_info.getPicture()).transform(new CircleTransform()).into(iv);
     }
 
-    void fillmarksui() {
-        ArrayList<MarkContent> items = new ArrayList<>();
-        List<Mark> marks = Select.from(Mark.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+    void fillprojectsui() {
+        ArrayList<ProjectContent> items = new ArrayList<>();
+        List<Project> projects = Select.from(Project.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
 
-        for (int i = marks.size() - 1; i > 0; i--) {
-            Mark info = marks.get(i);
-            items.add(new MarkContent(info.getFinalnote(), info.getCorrecteur(), info.getTitle(), info.getTitlemodule()));
+        for (int i = projects.size() - 1; i > 0; i--) {
+            Project info = projects.get(i);
+            items.add(new ProjectContent(info.getTitle(), info.getBegin() + " -> " + info.getEnd(), info.getModuletitle()));
         }
         setadpt(items);
     }
 
     @UiThread
-    void fillnewmarksui() {
+    void fillnewprojectsui() {
         if (def_nb != 8) {
             if (def_semester != 11)
                 adapter.filter((def_nb + 1) * 5, "B" + Integer.toString(def_semester) + "%");
@@ -116,7 +115,7 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
+        List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
         if (ic.connected()) {
@@ -127,9 +126,9 @@ public class MarksActivityFragment extends Fragment {
                 infos.init(api.getuserinfo(gUser.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             user_info = new GUserInfos();
@@ -137,45 +136,33 @@ public class MarksActivityFragment extends Fragment {
         }
     }
 
-    void setMarks() {
-        fillmarksui();
+    void setProjects() {
+        fillprojectsui();
         if (ic.connected()) {
-            String m = null;
             api.setCookie("PHPSESSID", gUser.getToken());
             try {
-                m = api.getmarksandmodules(gUser.getLogin());
+                PProjects p = new PProjects(getActivity().getApplicationContext());
+                p.init(api);
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
-            PMarks marks = new PMarks();
-            marks.init(m);
-            api.setCookie("PHPSESSID", gUser.getToken());
-            try {
-                api.getuserinfo(gUser.getLogin());
-            } catch (HttpClientErrorException e) {
-                Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
-            fillnewmarksui();
+            fillnewprojectsui();
         }
     }
 
     @UiThread
     void setProgressBar() {
-        marks_progress.setVisibility(View.GONE);
+        projects_progress.setVisibility(View.GONE);
     }
 
     @Background
-    void profile_marks() {
+    void profile_projects() {
         setUserInfos();
-        setMarks();
+        setProjects();
         setProgressBar();
     }
 
@@ -184,7 +171,7 @@ public class MarksActivityFragment extends Fragment {
         ic = new IsConnected(getActivity().getApplicationContext());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
-        profile_marks();
+        profile_projects();
     }
 
     public void filter(int size, String semester, int def_nb_act, int def_semester_act) {
@@ -192,8 +179,7 @@ public class MarksActivityFragment extends Fragment {
             def_nb = def_nb_act;
             def_semester = def_semester_act;
             adapter.filter(size, semester);
-        }
-        else
+        } else
             Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
     }
 
