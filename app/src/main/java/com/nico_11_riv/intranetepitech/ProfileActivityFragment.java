@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
+import com.nico_11_riv.intranetepitech.database.Mark;
 import com.nico_11_riv.intranetepitech.database.Message;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
 import com.nico_11_riv.intranetepitech.database.setters.messages.PMessages;
@@ -84,7 +85,10 @@ public class ProfileActivityFragment extends Fragment {
     @ViewById
     RelativeLayout rl;
 
-    private GUser gUser = new GUser();
+    @ViewById
+    TextView noinfos;
+
+    private GUser user = new GUser();
     private GUserInfos user_info;
     private RVMessagesAdapter adapter;
     private IsConnected ic;
@@ -119,7 +123,7 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void fillmessagesui() {
-        List<Message> messages = Select.from(Message.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+        List<Message> messages = Select.from(Message.class).where(Condition.prop("login").eq(user.getLogin())).list();
         ArrayList<MessageContent> items = new ArrayList<>();
 
         for (int i = 0; i < messages.size(); i++) {
@@ -135,18 +139,18 @@ public class ProfileActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
+        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", user.getLogin());
 
         if (uInfos.size() > 0) {
             user_info = new GUserInfos();
             filluserinfosui();
         }
         if (ic.connected()) {
-            Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
-            api.setCookie("PHPSESSID", gUser.getToken());
+            Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
                 PUserInfos infos = new PUserInfos();
-                infos.init(api.getuserinfo(gUser.getLogin()));
+                infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
                 Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -162,7 +166,7 @@ public class ProfileActivityFragment extends Fragment {
     void setMessages() {
         fillmessagesui();
         if (ic.connected()) {
-            api.setCookie("PHPSESSID", gUser.getToken());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
                 PMessages msgs = new PMessages();
                 msgs.init(api.getnotifs());
@@ -180,6 +184,9 @@ public class ProfileActivityFragment extends Fragment {
     @UiThread
     void setProgressBar() {
         messages_progress.setVisibility(View.GONE);
+        List<Message> m = Mark.findWithQuery(Message.class, "SELECT * FROM Message WHERE login = ?", user.getLogin());
+        if (m.size() < 1)
+            noinfos.setVisibility(View.VISIBLE);
     }
 
     @Background

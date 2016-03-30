@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.nico_11_riv.intranetepitech.api.APIErrorHandler;
 import com.nico_11_riv.intranetepitech.api.IntrAPI;
+import com.nico_11_riv.intranetepitech.database.Mark;
+import com.nico_11_riv.intranetepitech.database.Message;
 import com.nico_11_riv.intranetepitech.database.Project;
 import com.nico_11_riv.intranetepitech.database.Userinfos;
 import com.nico_11_riv.intranetepitech.database.setters.projects.PProjects;
@@ -61,7 +63,11 @@ public class ProjectsActivityFragment extends Fragment {
     @ViewById
     ProgressBar projects_progress;
 
-    private GUser gUser = new GUser();
+    @ViewById
+    TextView noinfos;
+
+
+    private GUser user = new GUser();
     private GUserInfos user_info = new GUserInfos();
     private RVProjectsAdapter adapter;
     private IsConnected ic;
@@ -90,7 +96,7 @@ public class ProjectsActivityFragment extends Fragment {
 
     void fillprojectsui() {
         ArrayList<ProjectContent> items = new ArrayList<>();
-        List<Project> projects = Select.from(Project.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+        List<Project> projects = Select.from(Project.class).where(Condition.prop("login").eq(user.getLogin())).list();
 
         for (int i = projects.size() - 1; i > 0; i--) {
             Project info = projects.get(i);
@@ -115,15 +121,15 @@ public class ProjectsActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
+        List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", user.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
         if (ic.connected()) {
-            Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
-            api.setCookie("PHPSESSID", gUser.getToken());
+            Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
                 PUserInfos infos = new PUserInfos();
-                infos.init(api.getuserinfo(gUser.getLogin()));
+                infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
                 Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -139,7 +145,7 @@ public class ProjectsActivityFragment extends Fragment {
     void setProjects() {
         fillprojectsui();
         if (ic.connected()) {
-            api.setCookie("PHPSESSID", gUser.getToken());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
                 PProjects p = new PProjects(getActivity().getApplicationContext());
                 p.init(api);
@@ -157,6 +163,9 @@ public class ProjectsActivityFragment extends Fragment {
     @UiThread
     void setProgressBar() {
         projects_progress.setVisibility(View.GONE);
+        List<Project> m = Project.findWithQuery(Project.class, "SELECT * FROM Project WHERE login = ?", user.getLogin());
+        if (m.size() < 1)
+            noinfos.setVisibility(View.VISIBLE);
     }
 
     @Background

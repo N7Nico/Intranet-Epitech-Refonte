@@ -60,7 +60,10 @@ public class MarksActivityFragment extends Fragment {
     @ViewById
     ProgressBar marks_progress;
 
-    private GUser gUser = new GUser();
+    @ViewById
+    TextView noinfos;
+
+    private GUser user = new GUser();
     private GUserInfos user_info = new GUserInfos();
     private RVMarksAdapter adapter;
     private static int def_nb = 8;
@@ -91,7 +94,7 @@ public class MarksActivityFragment extends Fragment {
 
     void fillmarksui() {
         ArrayList<MarkContent> items = new ArrayList<>();
-        List<Mark> marks = Select.from(Mark.class).where(Condition.prop("login").eq(gUser.getLogin())).list();
+        List<Mark> marks = Select.from(Mark.class).where(Condition.prop("login").eq(user.getLogin())).list();
 
         for (int i = marks.size() - 1; i > 0; i--) {
             Mark info = marks.get(i);
@@ -116,15 +119,15 @@ public class MarksActivityFragment extends Fragment {
     }
 
     void setUserInfos() {
-        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", gUser.getLogin());
+        List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", user.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
         if (ic.connected()) {
-            Userinfos.deleteAll(Userinfos.class, "login = ?", gUser.getLogin());
-            api.setCookie("PHPSESSID", gUser.getToken());
+            Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
                 PUserInfos infos = new PUserInfos();
-                infos.init(api.getuserinfo(gUser.getLogin()));
+                infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -141,9 +144,9 @@ public class MarksActivityFragment extends Fragment {
         fillmarksui();
         if (ic.connected()) {
             String m = null;
-            api.setCookie("PHPSESSID", gUser.getToken());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
-                m = api.getmarksandmodules(gUser.getLogin());
+                m = api.getmarksandmodules(user.getLogin());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -153,9 +156,9 @@ public class MarksActivityFragment extends Fragment {
             }
             PMarks marks = new PMarks();
             marks.init(m);
-            api.setCookie("PHPSESSID", gUser.getToken());
+            api.setCookie("PHPSESSID", user.getToken());
             try {
-                api.getuserinfo(gUser.getLogin());
+                api.getuserinfo(user.getLogin());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -170,6 +173,9 @@ public class MarksActivityFragment extends Fragment {
     @UiThread
     void setProgressBar() {
         marks_progress.setVisibility(View.GONE);
+        List<Mark> m = Mark.findWithQuery(Mark.class, "SELECT * FROM Mark WHERE login = ?", user.getLogin());
+        if (m.size() < 1)
+            noinfos.setVisibility(View.VISIBLE);
     }
 
     @Background
