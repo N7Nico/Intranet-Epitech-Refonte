@@ -93,6 +93,11 @@ public class ProfileActivityFragment extends Fragment {
     private RVMessagesAdapter adapter;
     private IsConnected ic;
 
+    @UiThread
+    public void mToast(String msg, int time) {
+        Toast.makeText(getContext(), msg, time).show();
+    }
+
     @AfterInject
     void afterInject() {
         api.setRestErrorHandler(ErrorHandler);
@@ -153,9 +158,9 @@ public class ProfileActivityFragment extends Fragment {
                 infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             user_info = new GUserInfos();
@@ -172,9 +177,9 @@ public class ProfileActivityFragment extends Fragment {
                 msgs.init(api.getnotifs());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             fillnewmessagesui();

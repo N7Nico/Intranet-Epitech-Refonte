@@ -72,6 +72,11 @@ public class ModulesActivityFragment extends Fragment {
     private GUserInfos user_info = new GUserInfos();
     private RVModulesAdapter adapter;
 
+    @UiThread
+    public void mToast(String msg, int time) {
+        Toast.makeText(getContext(), msg, time).show();
+    }
+
     @AfterInject
     void afterInject() {
         api.setRestErrorHandler(ErrorHandler);
@@ -132,9 +137,9 @@ public class ModulesActivityFragment extends Fragment {
                 infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             user_info = new GUserInfos();
@@ -151,9 +156,9 @@ public class ModulesActivityFragment extends Fragment {
                 m = api.getmarksandmodules(user.getLogin());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             PModules modules = new PModules();
@@ -163,9 +168,9 @@ public class ModulesActivityFragment extends Fragment {
                 api.getuserinfo(user.getLogin());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             api.setCookie("PHPSESSID", user.getToken());
@@ -174,9 +179,9 @@ public class ModulesActivityFragment extends Fragment {
                 mod.init(api.getallmodules());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             }  catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             fillnewmodulesui();
@@ -212,13 +217,13 @@ public class ModulesActivityFragment extends Fragment {
             def_semester = def_semester_act;
             adapter.filter(size, semester);
         } else
-            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            mToast("Attendez le chargement de la page", Toast.LENGTH_SHORT);
     }
 
     public void search(String text) {
         if (adapter != null)
             adapter.search(text);
         else
-            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            mToast("Attendez le chargement de la page", Toast.LENGTH_SHORT);
     }
 }

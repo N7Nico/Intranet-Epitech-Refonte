@@ -1,4 +1,4 @@
-package com.nico_11_riv.intranetepitech.database.setters.planning;
+package com.nico_11_riv.intranetepitech.database.setters.schedule;
 
 /**
  *
@@ -6,25 +6,30 @@ package com.nico_11_riv.intranetepitech.database.setters.planning;
  *
  */
 
+import com.nico_11_riv.intranetepitech.database.Mark;
 import com.nico_11_riv.intranetepitech.database.setters.user.GUser;
-import com.nico_11_riv.intranetepitech.database.Planning;
+import com.nico_11_riv.intranetepitech.database.Schedule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Objects;
 
 
-public class PPlanning {
-    public PPlanning(String api) {
+public class PSchedule {
+    public PSchedule() {
+    }
+
+    public void init(String api) {
         GUser user = new GUser();
         try {
             JSONArray planning = new JSONArray(api);
             for (int i = 0; i < planning.length(); ++i) {
                 JSONObject tmp = planning.getJSONObject(i);
                 if (tmp.has("scolaryear")) {
-                    Planning pl = new Planning(user.getLogin());
+                    Schedule pl = new Schedule(user.getLogin());
                     pl.setScolaryear(!Objects.equals(tmp.getString("scolaryear"), "null") ? tmp.getString("scolaryear") : "n/a");
                     pl.setCodemodule(!Objects.equals(tmp.getString("codemodule"), "null") ? tmp.getString("codemodule") : "n/a");
                     pl.setCodeinstance(!Objects.equals(tmp.getString("codeinstance"), "null") ? tmp.getString("codeinstance") : "n/a");

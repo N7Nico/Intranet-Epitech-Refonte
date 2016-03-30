@@ -70,6 +70,11 @@ public class MarksActivityFragment extends Fragment {
     private static int def_semester = 11;
     private IsConnected ic;
 
+    @UiThread
+    public void mToast(String msg, int time) {
+        Toast.makeText(getContext(), msg, time).show();
+    }
+
     @AfterInject
     void afterInject() {
         api.setRestErrorHandler(ErrorHandler);
@@ -130,9 +135,9 @@ public class MarksActivityFragment extends Fragment {
                 infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             user_info = new GUserInfos();
@@ -149,9 +154,9 @@ public class MarksActivityFragment extends Fragment {
                 m = api.getmarksandmodules(user.getLogin());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             PMarks marks = new PMarks();
@@ -161,9 +166,9 @@ public class MarksActivityFragment extends Fragment {
                 api.getuserinfo(user.getLogin());
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             fillnewmarksui();
@@ -200,13 +205,13 @@ public class MarksActivityFragment extends Fragment {
             adapter.filter(size, semester);
         }
         else
-            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            mToast("Attendez le chargement de la page", Toast.LENGTH_SHORT);
     }
 
     public void search(String text) {
         if (adapter != null)
             adapter.search(text);
         else
-            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            mToast("Attendez le chargement de la page", Toast.LENGTH_SHORT);
     }
 }

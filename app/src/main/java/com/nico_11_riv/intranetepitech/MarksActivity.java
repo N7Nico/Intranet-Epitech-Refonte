@@ -18,6 +18,7 @@ import android.widget.SearchView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nico_11_riv.intranetepitech.database.User;
+import com.nico_11_riv.intranetepitech.toolbox.MenuSelect;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -172,32 +173,10 @@ public class MarksActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_profile) {
-            drawer_layout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, ProfileActivity_.class));
-        } else if (id == R.id.nav_marks) {
-            drawer_layout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, MarksActivity_.class));
-        } else if (id == R.id.nav_modules) {
-            drawer_layout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, ModulesActivity_.class));
-        } else if (id == R.id.nav_projects) {
-            drawer_layout.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, ProjectsActivity_.class));
-        } else if (id == R.id.nav_schedule) {
-
-        } else if (id == R.id.nav_logout) {
-            drawer_layout.closeDrawer(GravityCompat.START);
-            List<User> users = User.find(User.class, "connected = ?", "true");
-            User user = users.get(0);
-            user.setConnected("false");
-            user.save();
-            startActivity(new Intent(this, LoginActivity_.class));
-        }
-        drawer_layout.closeDrawer(GravityCompat.START);
+        MenuSelect menu = new MenuSelect();
+        startActivity(menu.select(this, drawer_layout, id));
         return true;
     }
 }

@@ -72,6 +72,11 @@ public class ProjectsActivityFragment extends Fragment {
     private RVProjectsAdapter adapter;
     private IsConnected ic;
 
+    @UiThread
+    public void mToast(String msg, int time) {
+        Toast.makeText(getContext(), msg, time).show();
+    }
+
     @AfterInject
     void afterInject() {
         api.setRestErrorHandler(ErrorHandler);
@@ -132,9 +137,9 @@ public class ProjectsActivityFragment extends Fragment {
                 infos.init(api.getuserinfo(user.getLogin()));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             user_info = new GUserInfos();
@@ -151,9 +156,9 @@ public class ProjectsActivityFragment extends Fragment {
                 p.init(api);
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                mToast(e.getMessage(), Toast.LENGTH_SHORT);
                 e.printStackTrace();
             }
             fillnewprojectsui();
@@ -189,13 +194,13 @@ public class ProjectsActivityFragment extends Fragment {
             def_semester = def_semester_act;
             adapter.filter(size, semester);
         } else
-            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            mToast("Attendez le chargement de la page", Toast.LENGTH_SHORT);
     }
 
     public void search(String text) {
         if (adapter != null)
             adapter.search(text);
         else
-            Toast.makeText(getActivity().getApplicationContext(), "Attendez le chargement de la page", Toast.LENGTH_SHORT).show();
+            mToast("Attendez le chargement de la page", Toast.LENGTH_SHORT);
     }
 }
