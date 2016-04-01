@@ -161,16 +161,6 @@ public class MarksActivityFragment extends Fragment {
             }
             PMarks marks = new PMarks();
             marks.init(m);
-            api.setCookie("PHPSESSID", user.getToken());
-            try {
-                api.getuserinfo(user.getLogin());
-            } catch (HttpClientErrorException e) {
-                Log.d("Response", e.getResponseBodyAsString());
-                mToast(e.getMessage(), Toast.LENGTH_SHORT);
-            } catch (NullPointerException e) {
-                mToast(e.getMessage(), Toast.LENGTH_SHORT);
-                e.printStackTrace();
-            }
             fillnewmarksui();
         }
     }

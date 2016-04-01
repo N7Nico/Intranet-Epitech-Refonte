@@ -43,9 +43,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
+ *
  * Created by nicol on 15/03/2016.
+ *
  */
 
 @EFragment(R.layout.fragment_schedule)
@@ -62,12 +65,13 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
 
     private GUser user = new GUser();
     private GUserInfos user_info = new GUserInfos();
-    private List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+    private List<WeekViewEvent> events = new ArrayList<>();
     private IsConnected ic;
     private String startDate;
     private String endDate;
     private Calendar calendar;
-    private int wait;
+    private int dojob;
+    private int no;
 
     @UiThread
     public void mToast(String msg, int time) {
@@ -113,21 +117,17 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
         }
     }
 
-    void setStartDate(int newYear, int newMonth) {
+    private void setStartDate(int newYear, int newMonth) {
         calendar = Calendar.getInstance();
-        // passing month-1 because 0-->jan, 1-->feb... 11-->dec
-        calendar.set(newYear, newMonth - 1, 1);
-        calendar.set(Calendar.DATE, calendar.getActualMinimum(Calendar.DATE));
-        Date datee = calendar.getTime();
-        DateFormat DATE_FORMATT = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
-        startDate = DATE_FORMATT.format(datee);
+        calendar.set(newYear, newMonth - 1, calendar.getActualMinimum(Calendar.DATE));
+        Date date = calendar.getTime();
+        DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
+        startDate = DATE_FORMAT.format(date);
     }
 
-    void setEndDate(int newYear, int newMonth) {
+    private void setEndDate(int newYear, int newMonth) {
         calendar = Calendar.getInstance();
-        // passing month-1 because 0-->jan, 1-->feb... 11-->dec
-        calendar.set(newYear, newMonth - 1, 1);
-        calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+        calendar.set(newYear, newMonth - 1, calendar.getActualMaximum(Calendar.DATE));
         Date date = calendar.getTime();
         DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
         endDate = DATE_FORMAT.format(date);
@@ -144,13 +144,13 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
 
     @Background
     void setSchedule(int newYear, int newMonth) {
-        setStartDate(newYear, newMonth);
-        setEndDate(newYear, newMonth);
+        while (dojob == 1) ;
+        dojob = 1;
         if (ic.connected()) {
             api.setCookie("PHPSESSID", user.getToken());
             try {
                 PSchedule pl = new PSchedule();
-                pl.init(api.getplanning(startDate, endDate));
+                pl.init(api.getplanning(startDate, endDate), newYear, newMonth);
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
                 mToast(e.getMessage(), Toast.LENGTH_SHORT);
@@ -159,8 +159,8 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
                 e.printStackTrace();
             }
         }
-       events.clear();
-        List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule where login = ? and registerevent = ? or registerevent = ?", user.getLogin(), "registered", "present");
+        // List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule where login = ? and registerevent = ? or registerevent = ?", user.getLogin(), "registered", "present");
+        List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
         for (int i = 0; i < pl.size(); i++) {
             Schedule info = pl.get(i);
             Calendar cal = Calendar.getInstance();
@@ -189,21 +189,27 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
                 event.setColor(Color.parseColor(eventypes.get(info.getTypecode())));
             else
                 event.setColor(Color.parseColor("#668cb3"));
-            events.add(event);
-        }
-        List<WeekViewEvent> matchedEvents = new ArrayList<WeekViewEvent>();
-        for (WeekViewEvent event : events) {
-            if (eventMatches(event, newYear, newMonth)) {
-                matchedEvents.add(event);
+
+            no = 0;
+            for (int j = 0; j < events.size(); j++) {
+                WeekViewEvent wve = events.get(j);
+                if (Objects.equals(wve.getName(), event.getName())) {
+                    no = 1;
+                    break;
+                }
             }
+            if (no != 1) {
+                events.add(event);
+            }
+
         }
-        events = matchedEvents;
-//        notif();
-        wait = 1;
+        notif();
+        dojob = 0;
     }
 
     @AfterViews
     void init() {
+        dojob = 0;
         ic = new IsConnected(getActivity().getApplicationContext());
         weekView.setMonthChangeListener(this);
         weekView.setOnEventClickListener(this);
@@ -212,9 +218,11 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
 
     @Override
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-        wait = 0;
-        setSchedule(newYear, newMonth);
-        while (wait == 0);
+        setStartDate(newYear, newMonth);
+        setEndDate(newYear, newMonth);
+        List<Schedule> m = Schedule.findWithQuery(Schedule.class, "SELECT * FROM Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
+        if (m.size() < 1)
+            setSchedule(newYear, newMonth);
         return events;
     }
 

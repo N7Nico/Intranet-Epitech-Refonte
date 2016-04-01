@@ -19,6 +19,8 @@ public class Schedule extends SugarRecord {
     private String regstudent;
     private String allowtoken;
     private String typecode;
+    private int newyear;
+    private int newmonth;
 
     public Schedule() {
     }
@@ -153,5 +155,21 @@ public class Schedule extends SugarRecord {
 
     public void setTypecode(String typecode) {
         this.typecode = typecode;
+    }
+
+    public int getNewyear() {
+        return newyear;
+    }
+
+    public void setNewyear(int newyear) {
+        this.newyear = newyear;
+    }
+
+    public int getNewmonth() {
+        return newmonth;
+    }
+
+    public void setNewmonth(int newmonth) {
+        this.newmonth = newmonth;
     }
 }
