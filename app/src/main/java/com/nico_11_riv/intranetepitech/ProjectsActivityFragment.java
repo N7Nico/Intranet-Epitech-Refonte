@@ -70,7 +70,7 @@ public class ProjectsActivityFragment extends Fragment {
     private GUser user = new GUser();
     private GUserInfos user_info = new GUserInfos();
     private RVProjectsAdapter adapter;
-    private IsConnected ic;
+    private IsConnected is;
 
     @UiThread
     public void mToast(String msg, int time) {
@@ -129,7 +129,7 @@ public class ProjectsActivityFragment extends Fragment {
         List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", user.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
-        if (ic.connected()) {
+        if (is.connected()) {
             Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
             api.setCookie("PHPSESSID", user.getToken());
             try {
@@ -149,7 +149,7 @@ public class ProjectsActivityFragment extends Fragment {
 
     void setProjects() {
         fillprojectsui();
-        if (ic.connected()) {
+        if (is.connected()) {
             api.setCookie("PHPSESSID", user.getToken());
             try {
                 PProjects p = new PProjects(getActivity().getApplicationContext());
@@ -182,7 +182,7 @@ public class ProjectsActivityFragment extends Fragment {
 
     @AfterViews
     void init() {
-        ic = new IsConnected(getActivity().getApplicationContext());
+        is = new IsConnected(getActivity().getApplicationContext());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         profile_projects();

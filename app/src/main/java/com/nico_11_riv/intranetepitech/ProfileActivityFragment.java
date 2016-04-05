@@ -91,7 +91,7 @@ public class ProfileActivityFragment extends Fragment {
     private GUser user = new GUser();
     private GUserInfos user_info;
     private RVMessagesAdapter adapter;
-    private IsConnected ic;
+    private IsConnected is;
 
     @UiThread
     public void mToast(String msg, int time) {
@@ -150,7 +150,7 @@ public class ProfileActivityFragment extends Fragment {
             user_info = new GUserInfos();
             filluserinfosui();
         }
-        if (ic.connected()) {
+        if (is.connected()) {
             Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
             api.setCookie("PHPSESSID", user.getToken());
             try {
@@ -170,7 +170,7 @@ public class ProfileActivityFragment extends Fragment {
 
     void setMessages() {
         fillmessagesui();
-        if (ic.connected()) {
+        if (is.connected()) {
             api.setCookie("PHPSESSID", user.getToken());
             try {
                 PMessages msgs = new PMessages();
@@ -203,7 +203,7 @@ public class ProfileActivityFragment extends Fragment {
 
     @AfterViews
     void init() {
-        ic = new IsConnected(getActivity().getApplicationContext());
+        is = new IsConnected(getActivity().getApplicationContext());
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             background.setVisibility(View.GONE);
         }

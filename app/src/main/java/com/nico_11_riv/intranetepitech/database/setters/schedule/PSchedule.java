@@ -20,15 +20,10 @@ public class PSchedule {
     public PSchedule() {
     }
 
-    public void init(String api, int newYear, int newMonth) {
+    public void init(String api) {
         GUser user = new GUser();
         try {
             JSONArray planning = new JSONArray(api);
-            /*List<Schedule> m = Schedule.findWithQuery(Schedule.class, "SELECT * FROM Schedule WHERE login = ? AND startdate = ? AND enddate = ?", user.getLogin(), startDate, endDate);
-            for (int n = 0; n < m.size(); n++) {
-                Schedule schedule = m.get(n);
-                schedule.delete();
-            }*/
             for (int i = 0; i < planning.length(); ++i) {
                 JSONObject tmp = planning.getJSONObject(i);
                 if (tmp.has("scolaryear")) {
@@ -47,8 +42,6 @@ public class PSchedule {
                     pl.setAllowtoken(!Objects.equals(tmp.getString("allow_token"), "null") ? tmp.getString("allow_token") : "n/a");
                     pl.setRegisterevent(!Objects.equals(tmp.getString("event_registered"), "null") ? tmp.getString("event_registered") : "n/a");
                     pl.setTypecode(!Objects.equals(tmp.getString("type_code"), "null") ? tmp.getString("type_code") : "n/a");
-                    pl.setNewyear(newYear);
-                    pl.setNewmonth(newMonth);
                     pl.save();
                 }
             }

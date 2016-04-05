@@ -44,7 +44,6 @@ public class MenuSelect {
             return new Intent(activity, ProjectsActivity_.class);
         } else if (id == R.id.nav_schedule) {
             drawer_layout.closeDrawer(GravityCompat.START);
-            Schedule.deleteAll(Schedule.class, "login = ?", user.getLogin());
             return new Intent(activity, ScheduleActivity_.class);
         } else if (id == R.id.nav_logout) {
             drawer_layout.closeDrawer(GravityCompat.START);

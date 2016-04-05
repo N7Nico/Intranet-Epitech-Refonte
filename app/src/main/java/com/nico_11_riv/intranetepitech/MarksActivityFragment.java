@@ -68,7 +68,7 @@ public class MarksActivityFragment extends Fragment {
     private RVMarksAdapter adapter;
     private static int def_nb = 8;
     private static int def_semester = 11;
-    private IsConnected ic;
+    private IsConnected is;
 
     @UiThread
     public void mToast(String msg, int time) {
@@ -127,7 +127,7 @@ public class MarksActivityFragment extends Fragment {
         List <Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", user.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
-        if (ic.connected()) {
+        if (is.connected()) {
             Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
             api.setCookie("PHPSESSID", user.getToken());
             try {
@@ -147,7 +147,7 @@ public class MarksActivityFragment extends Fragment {
 
     void setMarks() {
         fillmarksui();
-        if (ic.connected()) {
+        if (is.connected()) {
             String m = null;
             api.setCookie("PHPSESSID", user.getToken());
             try {
@@ -182,7 +182,7 @@ public class MarksActivityFragment extends Fragment {
 
     @AfterViews
     void init() {
-        ic = new IsConnected(getActivity().getApplicationContext());
+        is = new IsConnected(getActivity().getApplicationContext());
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
         profile_marks();

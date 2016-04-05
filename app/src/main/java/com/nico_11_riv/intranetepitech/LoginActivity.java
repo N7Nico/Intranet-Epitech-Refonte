@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         String passwd = vpasswd.getText().toString();
         View focusView = null;
         boolean cancel = false;
-        IsConnected ic = new IsConnected(getApplicationContext());
+        IsConnected is = new IsConnected(getApplicationContext());
 
         reset();
 
@@ -172,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity_.class));
             } else if (User.count(User.class, "login = ?", new String[]{login}) == 1) {
                 error_connect("Mauvais Mot de Passe");
-            } else if (!ic.connected()) {
+            } else if (!is.connected()) {
                 progressBarGone();
                 error_connect("Connection Internet Requise");
             } else {

@@ -65,15 +65,11 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
 
     private GUser user = new GUser();
     private GUserInfos user_info = new GUserInfos();
-    private List<WeekViewEvent> events = new ArrayList<>();
-    private List<WeekViewEvent> new_events = new ArrayList<>();
-    private IsConnected ic;
+    private IsConnected is;
     private String startDate;
     private String endDate;
     private Calendar calendar;
-    private int dojob;
-    private int no;
-    private int toto;
+    private int wait;
 
     @UiThread
     public void mToast(String msg, int time) {
@@ -101,7 +97,7 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
         List<Userinfos> uInfos = Userinfos.findWithQuery(Userinfos.class, "SELECT * FROM Userinfos WHERE login = ?", user.getLogin());
         if (uInfos.size() > 0)
             filluserinfosui();
-        if (ic.connected()) {
+        if (is.connected()) {
             Userinfos.deleteAll(Userinfos.class, "login = ?", user.getLogin());
             api.setCookie("PHPSESSID", user.getToken());
             try {
@@ -137,41 +133,49 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
         endDate = DATE_FORMAT.format(date);
     }
 
-    @UiThread
-    void notif() {
-        weekView.notifyDatasetChanged();
-    }
-
     private boolean eventMatches(WeekViewEvent event, int year, int month) {
         return (event.getStartTime().get(Calendar.YEAR) == year && event.getStartTime().get(Calendar.MONTH) == month - 1) || (event.getEndTime().get(Calendar.YEAR) == year && event.getEndTime().get(Calendar.MONTH) == month - 1);
     }
 
+    @AfterViews
+    void init() {
+        is = new IsConnected(getActivity().getApplicationContext());
+        weekView.setMonthChangeListener(this);
+        weekView.setOnEventClickListener(this);
+        setUserInfos();
+    }
+
     @Background
-    void setSchedule(int newYear, int newMonth) {
-        while (dojob == 1) ;
-        dojob = 1;
-        List<Schedule> m = Schedule.findWithQuery(Schedule.class, "SELECT * FROM Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
-        if (m.size() > 0) {
-            return;
-        }
-        if (ic.connected()) {
+    void setSchedule() {
+        if (is.connected()) {
+            Schedule.deleteAll(Schedule.class, "login = ?", user.getLogin());
             api.setCookie("PHPSESSID", user.getToken());
             try {
-                PSchedule pl = new PSchedule();
-                pl.init(api.getplanning(startDate, endDate), newYear, newMonth);
+                PSchedule sch = new PSchedule();
+                sch.init(api.getplanning(startDate, endDate));
             } catch (HttpClientErrorException e) {
                 Log.d("Response", e.getResponseBodyAsString());
-                mToast(e.getMessage(), Toast.LENGTH_SHORT);
-            } catch (NullPointerException e) {
-                mToast(e.getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
+            }  catch (NullPointerException e) {
+                Toast.makeText(getContext(), "Erreur de l'API", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
-        new_events.clear();
-        //events.clear();
-        // List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule where login = ? and registerevent = ? or registerevent = ?", user.getLogin(), "registered", "present");
-        List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
-       // List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule WHERE login = ?", user.getLogin());
+        wait = 0;
+    }
+
+    @Override
+    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        List<WeekViewEvent> events;
+
+        wait = 1;
+        setStartDate(newYear, newMonth);
+        setEndDate(newYear, newMonth);
+
+        setSchedule();
+        while (wait == 1) ;
+        events = new ArrayList<>();
+        List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * FROM Schedule WHERE login = ?", user.getLogin());
         for (int i = 0; i < pl.size(); i++) {
             Schedule info = pl.get(i);
             Calendar cal = Calendar.getInstance();
@@ -200,46 +204,15 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
                 event.setColor(Color.parseColor(eventypes.get(info.getTypecode())));
             else
                 event.setColor(Color.parseColor("#668cb3"));
-
-            no = 0;
-            for (int j = 0; j < events.size(); j++) {
-                WeekViewEvent wve = events.get(j);
-                if (Objects.equals(wve.getName(), event.getName())) {
-                    no = 1;
-                    break;
-                }
-            }
-            if (no != 1) {
-                new_events.add(event);
-            }
+            events.add(event);
         }
-        for (WeekViewEvent event : new_events) {
+        List<WeekViewEvent> matchedEvents = new ArrayList<WeekViewEvent>();
+        for (WeekViewEvent event : events) {
             if (eventMatches(event, newYear, newMonth)) {
-                events.add(event);
+                matchedEvents.add(event);
             }
         }
-        notif();
-        dojob = 0;
-    }
-
-    @AfterViews
-    void init() {
-        dojob = 0;
-        toto = 0;
-        ic = new IsConnected(getActivity().getApplicationContext());
-        weekView.setMonthChangeListener(this);
-        weekView.setOnEventClickListener(this);
-        setUserInfos();
-    }
-
-    @Override
-    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-        setStartDate(newYear, newMonth);
-        setEndDate(newYear, newMonth);
-        List<Schedule> m = Schedule.findWithQuery(Schedule.class, "SELECT * FROM Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
-        if (m.size() < 1)
-            setSchedule(newYear, newMonth);
-        return events;
+        return matchedEvents;
     }
 
     @Override
