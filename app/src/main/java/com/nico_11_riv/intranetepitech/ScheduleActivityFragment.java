@@ -66,12 +66,14 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
     private GUser user = new GUser();
     private GUserInfos user_info = new GUserInfos();
     private List<WeekViewEvent> events = new ArrayList<>();
+    private List<WeekViewEvent> new_events = new ArrayList<>();
     private IsConnected ic;
     private String startDate;
     private String endDate;
     private Calendar calendar;
     private int dojob;
     private int no;
+    private int toto;
 
     @UiThread
     public void mToast(String msg, int time) {
@@ -119,6 +121,7 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
 
     private void setStartDate(int newYear, int newMonth) {
         calendar = Calendar.getInstance();
+        calendar.set(newYear, newMonth - 1, 1);
         calendar.set(newYear, newMonth - 1, calendar.getActualMinimum(Calendar.DATE));
         Date date = calendar.getTime();
         DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
@@ -127,6 +130,7 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
 
     private void setEndDate(int newYear, int newMonth) {
         calendar = Calendar.getInstance();
+        calendar.set(newYear, newMonth - 1, 1);
         calendar.set(newYear, newMonth - 1, calendar.getActualMaximum(Calendar.DATE));
         Date date = calendar.getTime();
         DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE);
@@ -146,6 +150,10 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
     void setSchedule(int newYear, int newMonth) {
         while (dojob == 1) ;
         dojob = 1;
+        List<Schedule> m = Schedule.findWithQuery(Schedule.class, "SELECT * FROM Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
+        if (m.size() > 0) {
+            return;
+        }
         if (ic.connected()) {
             api.setCookie("PHPSESSID", user.getToken());
             try {
@@ -159,8 +167,11 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
                 e.printStackTrace();
             }
         }
+        new_events.clear();
+        //events.clear();
         // List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule where login = ? and registerevent = ? or registerevent = ?", user.getLogin(), "registered", "present");
         List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule WHERE login = ? AND newyear = ? AND newmonth = ?", user.getLogin(), Integer.toString(newYear), Integer.toString(newMonth));
+       // List<Schedule> pl = Schedule.findWithQuery(Schedule.class, "Select * from Schedule WHERE login = ?", user.getLogin());
         for (int i = 0; i < pl.size(); i++) {
             Schedule info = pl.get(i);
             Calendar cal = Calendar.getInstance();
@@ -199,9 +210,13 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
                 }
             }
             if (no != 1) {
+                new_events.add(event);
+            }
+        }
+        for (WeekViewEvent event : new_events) {
+            if (eventMatches(event, newYear, newMonth)) {
                 events.add(event);
             }
-
         }
         notif();
         dojob = 0;
@@ -210,6 +225,7 @@ public class ScheduleActivityFragment extends Fragment implements MonthLoader.Mo
     @AfterViews
     void init() {
         dojob = 0;
+        toto = 0;
         ic = new IsConnected(getActivity().getApplicationContext());
         weekView.setMonthChangeListener(this);
         weekView.setOnEventClickListener(this);
